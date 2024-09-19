@@ -44,4 +44,3 @@ async def check_payment_status(user_id, amount):
 
     if data['status'] == 'paid' and data['amount'] == amount:
         return True
-    return False

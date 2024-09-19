@@ -633,4 +633,3 @@ async def get_user_balance(user_id):
 #         return result[0] if result else 0
 
 # (if __name__ == "__main__":)
-#     init_db()
