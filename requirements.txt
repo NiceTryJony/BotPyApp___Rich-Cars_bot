@@ -3,4 +3,5 @@ python-dotenv
 SQLAlchemy
 requests
 aiosqlite
-gunicorn
+gunicorn-23.0.0
+Flask==3.0.3
