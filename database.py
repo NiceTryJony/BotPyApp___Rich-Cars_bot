@@ -13,29 +13,40 @@ async def init_db():
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS users (
                     user_id INTEGER PRIMARY KEY,
-                    username TEXT,
+                    username TEXT NOT NULL,
                     balance REAL DEFAULT 0
                 )
             ''')
 
-            # Таблица машин
+            # Создание таблицы машин
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS cars (
                     car_id INTEGER PRIMARY KEY,
-                    name TEXT,
-                    price REAL,
-                    power REAL
+                    name TEXT NOT NULL,
+                    price REAL NOT NULL,
+                    power REAL NOT NULL
                 )
             ''')
 
-            # Таблица покупок
+            # Создание таблицы покупок
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS purchases (
                     user_id INTEGER,
                     car_id INTEGER,
-                    purchase_date TEXT,
-                    FOREIGN KEY(user_id) REFERENCES users(user_id),
-                    FOREIGN KEY(car_id) REFERENCES cars(car_id)
+                    purchase_date TEXT NOT NULL,
+                    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+                    FOREIGN KEY(car_id) REFERENCES cars(car_id) ON DELETE CASCADE
+                )
+            ''')
+
+            # Создание таблицы доходов/заработков
+            await cursor.execute('''
+                CREATE TABLE IF NOT EXISTS earnings (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER,
+                    amount REAL NOT NULL,
+                    timestamp TEXT NOT NULL,
+                    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
                 )
             ''')
 
@@ -69,7 +80,7 @@ async def update_user_balance(user_id, amount):
             ''', (amount, user_id))
             await conn.commit()
 
-# Логирование покупки (или заработка)
+# Логирование дохода (покупки или заработка)
 async def log_earning(user_id, amount):
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     async with aiosqlite.connect(DB_NAME) as conn:
@@ -92,7 +103,7 @@ async def get_car_price(car_id):
                 return result[0]
             return None
 
-# Проверка баланса пользователя
+# Получение баланса пользователя
 async def get_user_balance(user_id):
     async with aiosqlite.connect(DB_NAME) as conn:
         async with conn.cursor() as cursor:
@@ -101,6 +112,122 @@ async def get_user_balance(user_id):
             ''', (user_id,))
             result = await cursor.fetchone()
             return result[0] if result else 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+# )import aiosqlite
+# from datetime import datetime
+
+# )DB_NAME = 'CARS2.db'
+
+# # Инициализация базы данных
+# async def init_db():
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('PRAGMA journal_mode=WAL;')  # Включение WAL режима
+
+#             # Создание таблицы users
+#             await cursor.execute('''
+#                 CREATE TABLE IF NOT EXISTS users (
+#                     user_id INTEGER PRIMARY KEY,
+#                     username TEXT,
+#                     balance REAL DEFAULT 0
+#                 )
+#             ''')
+
+#             # Таблица машин
+#             await cursor.execute('''
+#                 CREATE TABLE IF NOT EXISTS cars (
+#                     car_id INTEGER PRIMARY KEY,
+#                     name TEXT,
+#                     price REAL,
+#                     power REAL
+#                 )
+#             ''')
+
+#             # Таблица покупок
+#             await cursor.execute('''
+#                 CREATE TABLE IF NOT EXISTS purchases (
+#                     user_id INTEGER,
+#                     car_id INTEGER,
+#                     purchase_date TEXT,
+#                     FOREIGN KEY(user_id) REFERENCES users(user_id),
+#                     FOREIGN KEY(car_id) REFERENCES cars(car_id)
+#                 )
+#             ''')
+
+#             await conn.commit()
+
+# # Добавление пользователя
+# async def add_user(user_id, username):
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('''
+#                 INSERT OR IGNORE INTO users (user_id, username) VALUES (?, ?)
+#             ''', (user_id, username))
+#             await conn.commit()
+
+# # Получение данных пользователя
+# async def get_user(user_id):
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('SELECT user_id, username, balance FROM users WHERE user_id = ?', (user_id,))
+#             row = await cursor.fetchone()
+#             if row:
+#                 return {'user_id': row[0], 'username': row[1], 'balance': row[2]}
+#             return None
+
+# # Обновление баланса пользователя
+# async def update_user_balance(user_id, amount):
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('''
+#                 UPDATE users SET balance = balance + ? WHERE user_id = ?
+#             ''', (amount, user_id))
+#             await conn.commit()
+
+# # Логирование покупки (или заработка)
+# async def log_earning(user_id, amount):
+#     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('''
+#                 INSERT INTO earnings (user_id, amount, timestamp)
+#                 VALUES (?, ?, ?)
+#             ''', (user_id, amount, now))
+#             await conn.commit()
+
+# # Получение цены машины
+# async def get_car_price(car_id):
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('''
+#                 SELECT price FROM cars WHERE car_id = ?
+#             ''', (car_id,))
+#             result = await cursor.fetchone()
+#             if result:
+#                 return result[0]
+#             return None
+
+# # Проверка баланса пользователя
+# async def get_user_balance(user_id):
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('''
+#                 SELECT balance FROM users WHERE user_id = ?
+#             ''', (user_id,))
+#             result = await cursor.fetchone()
+#             return result[0] if result else 0
 
 
 
