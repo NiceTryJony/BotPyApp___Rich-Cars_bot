@@ -54,12 +54,11 @@ async def init_db():
             # Создание таблицы промокодов
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS promo_codes (
-                    code TEXT PRIMARY KEY,
-                    user_id INTEGER,
-                    reward INTEGER,
-                    expiration_date TEXT,
-                    type TEXT,
-                    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    code TEXT NOT NULL,
+                    category TEXT NOT NULL, -- 'normal', 'special', 'advanced'
+                    reward INTEGER NOT NULL,
+                    expiration_time TEXT NOT NULL
                 )
             ''')
             await conn.commit()
