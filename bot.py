@@ -1,16 +1,17 @@
 import logging
+import aiosqlite
 import os
 from dotenv import load_dotenv
 import asyncio
 from aiogram import Bot, Dispatcher, types
-from database import init_db, add_user, get_user, get_car_price, update_user_balance, log_earning, get_user_balance, create_promo_code
-from payment_bot import create_payment_link
+from database import init_db, add_user, get_user, update_user_balance, get_user_balance
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from datetime import datetime, timedelta
 
 # Загрузка переменных окружения
 load_dotenv()
-
 API_TOKEN = os.getenv('API_TOKEN')
+DB_NAME = os.getenv('DB_NAME')
 
 # Настройка логирования
 logging.basicConfig(
@@ -25,93 +26,97 @@ logging.basicConfig(
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
+# Генерация промокодов
+async def generate_promo_codes():
+    # Логика генерации новых промокодов
+    # Здесь можно генерировать коды и записывать их в БД
+    promo_codes = [
+        ('CODE1', 'normal', 10),
+        ('CODE2', 'normal', 10),
+        ('CODE3', 'normal', 10),
+        ('CODE4', 'normal', 30),
+        ('CODE5', 'normal', 30),
+        ('CODE6', 'normal', 50),
+        ('SPECIAL1', 'special', 100),
+        ('SPECIAL2', 'special', 150),
+        ('SPECIAL3', 'special', 200),
+        ('ADVANCED1', 'advanced', 350),
+        ('ADVANCED2', 'advanced', 400),
+        ('ADVANCED3', 'advanced', 450),
+    ]
+
+    expiration_time = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')
+
+    async with aiosqlite.connect(DB_NAME) as conn:
+        async with conn.cursor() as cursor:
+            await cursor.execute('DELETE FROM promo_codes')  # Очистка старых промокодов
+            for code, category, reward in promo_codes:
+                await cursor.execute('INSERT INTO promo_codes (code, category, reward, expiration_time) VALUES (?, ?, ?, ?)',
+                                     (code, category, reward, expiration_time))
+            await conn.commit()
+
 # Обработка команды /start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
     try:
-        user = await get_user(message.from_user.id)  # Проверяем, есть ли пользователь в БД
+        user = await get_user(message.from_user.id)
         if user:
             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
         else:
             await message.reply("Привет! Введите ваше имя, чтобы начать.")
-            return  # Ждем имя пользователя
+            return
 
-        await asyncio.sleep(1)
         await show_main_menu(message)
-
     except Exception as e:
         logging.error(f"Ошибка при обработке команды /start: {e}")
 
-# Обработка имени пользователя
-@dp.message_handler(lambda message: message.text.isalpha())
-async def handle_name(message: types.Message):
-    try:
-        username = message.text
-        await add_user(message.from_user.id, username)  # Добавляем нового пользователя в БД
-        await message.reply(f"Добро пожаловать, {username}!")
-        
-        await asyncio.sleep(1)
-        await show_main_menu(message)
-
-    except Exception as e:
-        logging.error(f"Ошибка при обработке имени пользователя: {e}")
-
-# Главное меню с кнопкой для активации промокодов
+# Главное меню
 async def show_main_menu(message: types.Message):
     try:
         markup = InlineKeyboardMarkup()
-        promo_code_btn = InlineKeyboardButton("Активация промокода", callback_data='activate_promo')
-        open_app_btn = InlineKeyboardButton("Открыть мини-приложение", url='https://botrichcars-3d6fdb98c849.herokuapp.com')
-        markup.add(promo_code_btn, open_app_btn)
+        promo_code_btn = InlineKeyboardButton("Активировать промокод", callback_data='activate_promo')
+        markup.add(promo_code_btn)
         await message.reply("Выберите действие:", reply_markup=markup)
     except Exception as e:
         logging.error(f"Ошибка при отображении главного меню: {e}")
 
-# Обработка нажатия на кнопку "Активация промокода"
+# Обработка промокода
 @dp.callback_query_handler(lambda c: c.data == 'activate_promo')
 async def process_activate_promo(callback_query: types.CallbackQuery):
-    try:
-        markup = InlineKeyboardMarkup()
-        advanced_promo_btn = InlineKeyboardButton("Продвинутый промокод", callback_data='enter_advanced_promo_code')
-        special_promo_btn = InlineKeyboardButton("Специальный промокод", callback_data='enter_special_promo_code')
-        regular_promo_btn = InlineKeyboardButton("Обычный промокод", callback_data='enter_regular_promo_code')
-        markup.add(advanced_promo_btn, special_promo_btn, regular_promo_btn)
-        await bot.send_message(callback_query.from_user.id, "Выберите тип промокода:", reply_markup=markup)
-    except Exception as e:
-        logging.error(f"Ошибка при активации промокода: {e}")
+    await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
+    dp.register_message_handler(handle_promo_code, state=None)  # Ждем промокод
 
-# Обработка каждого типа промокода
-@dp.callback_query_handler(lambda c: c.data == 'enter_advanced_promo_code')
-async def process_advanced_promo_code(callback_query: types.CallbackQuery):
-    user_id = callback_query.from_user.id
-    promo_code, reward, expiration_time = await create_promo_code(user_id, 'advanced')
-    await bot.send_message(user_id, f"Ваш продвинутый промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
+# Логика обработки введенного промокода
+async def handle_promo_code(message: types.Message):
+    promo_code = message.text.strip()
+    async with aiosqlite.connect(DB_NAME) as conn:
+        async with conn.cursor() as cursor:
+            await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+            result = await cursor.fetchone()
 
-@dp.callback_query_handler(lambda c: c.data == 'enter_special_promo_code')
-async def process_special_promo_code(callback_query: types.CallbackQuery):
-    user_id = callback_query.from_user.id
-    promo_code, reward, expiration_time = await create_promo_code(user_id, 'special')
-    await bot.send_message(user_id, f"Ваш специальный промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
+            if result:
+                reward, expiration_time = result
+                now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-@dp.callback_query_handler(lambda c: c.data == 'enter_regular_promo_code')
-async def process_regular_promo_code(callback_query: types.CallbackQuery):
-    user_id = callback_query.from_user.id
-    promo_code, reward, expiration_time = await create_promo_code(user_id, 'regular')
-    await bot.send_message(user_id, f"Ваш обычный промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
+                if now < expiration_time:
+                    await update_user_balance(message.from_user.id, reward)
+                    await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+                else:
+                    await message.reply("Промокод истек.")
+            else:
+                await message.reply("Неверный промокод. Попробуйте снова.")
 
-# Запуск бота и базы данных
+# Запуск бота и инициализация базы данных
 async def main():
     try:
         await init_db()  # Инициализация базы данных
+        await generate_promo_codes()  # Генерация промокодов
         await dp.start_polling()  # Запуск бота
     except Exception as e:
         logging.error(f"Ошибка при запуске бота: {e}")
 
 if __name__ == '__main__':
-    try:
-        asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        logging.info("Бот остановлен.")
+    asyncio.run(main())
 
 
 ##########################################################################################################################################################################
