@@ -94,7 +94,7 @@ async def show_main_menu(message: types.Message):
     try:
         markup = InlineKeyboardMarkup()
         promo_code_btn = InlineKeyboardButton("Ввести промокод", callback_data='enter_promo')
-        open_app_btn = InlineKeyboardButton("Открыть мини-приложение", url='https://your-minigame-app.com')  # Укажи ссылку на мини-приложение
+        open_app_btn = InlineKeyboardButton("Открыть мини-приложение", url='https://botrichcars-3d6fdb98c849.herokuapp.com')  # Укажи ссылку на мини-приложение
         markup.add(promo_code_btn, open_app_btn)
         await message.reply("Выберите действие:", reply_markup=markup)
     except Exception as e:
