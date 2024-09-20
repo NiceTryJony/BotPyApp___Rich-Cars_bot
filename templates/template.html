@@ -11,9 +11,21 @@
     <h1>Welcome to your Telegram Web App</h1>
     <p id="user-info">Loading...</p>
 
+
+
+
+
+
+
+
+
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();  // Растягиваем Web App
+
+        document.getElementById('actionButton').addEventListener('click', () => {
+            Telegram.WebApp.close();  // Закрывает Web App после выполнения действия
+        });
 
         // Запрос данных пользователя
         fetch('/api/user_data')

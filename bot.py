@@ -5,7 +5,7 @@ import asyncio
 from aiogram import Bot, Dispatcher, types
 from database import init_db, add_user, get_user, get_car_price, update_user_balance, log_earning, get_user_balance
 from payment_bot import create_payment_link
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 # Загрузка переменных окружения
 load_dotenv()
