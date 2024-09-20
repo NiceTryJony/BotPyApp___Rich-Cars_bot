@@ -3,9 +3,9 @@ import os
 from dotenv import load_dotenv
 import asyncio
 from aiogram import Bot, Dispatcher, types
-from database import init_db, add_user, get_user, get_car_price, update_user_balance, log_earning, get_user_balance
+from database import init_db, add_user, get_user, get_car_price, update_user_balance, log_earning, get_user_balance, create_promo_code
 from payment_bot import create_payment_link
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Загрузка переменных окружения
 load_dotenv()
@@ -31,20 +31,16 @@ async def send_welcome(message: types.Message):
     try:
         user = await get_user(message.from_user.id)  # Проверяем, есть ли пользователь в БД
         if user:
-            # Пользователь найден — приветствие и меню
             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
         else:
-            # Если пользователя нет — просим ввести имя
             await message.reply("Привет! Введите ваше имя, чтобы начать.")
-            return  # Выходим, ждем имя пользователя
+            return  # Ждем имя пользователя
 
-        # В любом случае показываем меню
         await asyncio.sleep(1)
         await show_main_menu(message)
 
     except Exception as e:
         logging.error(f"Ошибка при обработке команды /start: {e}")
-
 
 # Обработка имени пользователя
 @dp.message_handler(lambda message: message.text.isalpha())
@@ -54,69 +50,54 @@ async def handle_name(message: types.Message):
         await add_user(message.from_user.id, username)  # Добавляем нового пользователя в БД
         await message.reply(f"Добро пожаловать, {username}!")
         
-        # Показ главного меню
         await asyncio.sleep(1)
         await show_main_menu(message)
 
     except Exception as e:
         logging.error(f"Ошибка при обработке имени пользователя: {e}")
 
-#######################################################################################################
-# # Обработка команды /start
-# @dp.message_handler(commands=['start'])
-# async def send_welcome(message: types.Message):
-#     try:
-#         user = await get_user(message.from_user.id)
-#         if user:
-#             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
-#         else:
-#             await message.reply("Привет! Введите ваше имя, чтобы начать.")
-#             await asyncio.sleep(2)
-#             await bot.send_message(message.from_user.id, "Для начала создайте свой профиль.")
-#     except Exception as e:
-#         logging.error(f"Ошибка при обработке команды /start: {e}")
-#
-# # Обработка имени пользователя
-# @dp.message_handler(lambda message: message.text.isalpha())
-# async def handle_name(message: types.Message):
-#     try:
-#         username = message.text
-#         await add_user(message.from_user.id, username)
-#         await message.reply(f"Добро пожаловать, {username}!")
-#         await asyncio.sleep(1)
-#         await show_main_menu(message)
-#     except Exception as e:
-#         logging.error(f"Ошибка при обработке имени пользователя: {e}")
-######################################################################################################
-
-# Главное меню с новыми кнопками
+# Главное меню с кнопкой для активации промокодов
 async def show_main_menu(message: types.Message):
     try:
         markup = InlineKeyboardMarkup()
-        promo_code_btn = InlineKeyboardButton("Ввести промокод", callback_data='enter_promo')
-        open_app_btn = InlineKeyboardButton("Открыть мини-приложение", url='https://botrichcars-3d6fdb98c849.herokuapp.com')  # Укажи ссылку на мини-приложение
+        promo_code_btn = InlineKeyboardButton("Активация промокода", callback_data='activate_promo')
+        open_app_btn = InlineKeyboardButton("Открыть мини-приложение", url='https://botrichcars-3d6fdb98c849.herokuapp.com')
         markup.add(promo_code_btn, open_app_btn)
         await message.reply("Выберите действие:", reply_markup=markup)
     except Exception as e:
         logging.error(f"Ошибка при отображении главного меню: {e}")
 
-# Обработка нажатия на кнопку "Ввести промокод"
-@dp.callback_query_handler(lambda c: c.data == 'enter_promo')
-async def process_enter_promo(callback_query: types.CallbackQuery):
+# Обработка нажатия на кнопку "Активация промокода"
+@dp.callback_query_handler(lambda c: c.data == 'activate_promo')
+async def process_activate_promo(callback_query: types.CallbackQuery):
     try:
-        await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
-        dp.register_message_handler(handle_promo_code, state=None)  # Ждем промокод
+        markup = InlineKeyboardMarkup()
+        advanced_promo_btn = InlineKeyboardButton("Продвинутый промокод", callback_data='enter_advanced_promo_code')
+        special_promo_btn = InlineKeyboardButton("Специальный промокод", callback_data='enter_special_promo_code')
+        regular_promo_btn = InlineKeyboardButton("Обычный промокод", callback_data='enter_regular_promo_code')
+        markup.add(advanced_promo_btn, special_promo_btn, regular_promo_btn)
+        await bot.send_message(callback_query.from_user.id, "Выберите тип промокода:", reply_markup=markup)
     except Exception as e:
-        logging.error(f"Ошибка при запросе промокода: {e}")
+        logging.error(f"Ошибка при активации промокода: {e}")
 
-# Обработка промокода
-async def handle_promo_code(message: types.Message):
-    promo_code = message.text
-    if promo_code == "HAMSTER2024":  # Пример проверочного кода
-        await message.reply("Промокод принят! Вы получили бонус.")
-        # Здесь можно добавить логику для начисления бонусов или других действий
-    else:
-        await message.reply("Неверный промокод. Попробуйте снова.")
+# Обработка каждого типа промокода
+@dp.callback_query_handler(lambda c: c.data == 'enter_advanced_promo_code')
+async def process_advanced_promo_code(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
+    promo_code, reward, expiration_time = await create_promo_code(user_id, 'advanced')
+    await bot.send_message(user_id, f"Ваш продвинутый промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
+
+@dp.callback_query_handler(lambda c: c.data == 'enter_special_promo_code')
+async def process_special_promo_code(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
+    promo_code, reward, expiration_time = await create_promo_code(user_id, 'special')
+    await bot.send_message(user_id, f"Ваш специальный промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
+
+@dp.callback_query_handler(lambda c: c.data == 'enter_regular_promo_code')
+async def process_regular_promo_code(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
+    promo_code, reward, expiration_time = await create_promo_code(user_id, 'regular')
+    await bot.send_message(user_id, f"Ваш обычный промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
 
 # Запуск бота и базы данных
 async def main():
@@ -131,6 +112,235 @@ if __name__ == '__main__':
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logging.info("Бот остановлен.")
+
+
+##########################################################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+##########################################################################################################################################################################
+#)import logging
+# import os
+# from dotenv import load_dotenv
+# import asyncio
+# from aiogram import Bot, Dispatcher, types
+# from database import init_db, add_user, get_user, get_car_price, update_user_balance, log_earning, get_user_balance
+# from payment_bot import create_payment_link
+# from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+
+# # Загрузка переменных окружения
+# load_dotenv()
+
+#)API_TOKEN = os.getenv('API_TOKEN')
+
+# # Настройка логирования
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format='%(asctime)s [%(levelname)s] %(message)s',
+#     handlers=[
+#         logging.FileHandler("bot.log"),
+#         logging.StreamHandler()
+#     ]
+# )
+
+#)bot = Bot(token=API_TOKEN)
+# dp = Dispatcher(bot)
+
+# # Обработка команды /start
+# @dp.message_handler(commands=['start'])
+# async def send_welcome(message: types.Message):
+#     try:
+#         user = await get_user(message.from_user.id)  # Проверяем, есть ли пользователь в БД
+#         if user:
+#             # Пользователь найден — приветствие и меню
+#             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
+#         else:
+#             # Если пользователя нет — просим ввести имя
+#             await message.reply("Привет! Введите ваше имя, чтобы начать.")
+#             return  # Выходим, ждем имя пользователя
+
+#         # В любом случае показываем меню
+#         await asyncio.sleep(1)
+#         await show_main_menu(message)
+
+#     except Exception as e:
+#         logging.error(f"Ошибка при обработке команды /start: {e}")
+
+
+# # Обработка имени пользователя
+# @dp.message_handler(lambda message: message.text.isalpha())
+# async def handle_name(message: types.Message):
+#     try:
+#         username = message.text
+#         await add_user(message.from_user.id, username)  # Добавляем нового пользователя в БД
+#         await message.reply(f"Добро пожаловать, {username}!")
+        
+#         # Показ главного меню
+#         await asyncio.sleep(1)
+#         await show_main_menu(message)
+
+#     except Exception as e:
+#         logging.error(f"Ошибка при обработке имени пользователя: {e}")
+
+# #######################################################################################################
+# # # Обработка команды /start
+# # @dp.message_handler(commands=['start'])
+# # async def send_welcome(message: types.Message):
+# #     try:
+# #         user = await get_user(message.from_user.id)
+# #         if user:
+# #             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
+# #         else:
+# #             await message.reply("Привет! Введите ваше имя, чтобы начать.")
+# #             await asyncio.sleep(2)
+# #             await bot.send_message(message.from_user.id, "Для начала создайте свой профиль.")
+# #     except Exception as e:
+# #         logging.error(f"Ошибка при обработке команды /start: {e}")
+# #
+# # # Обработка имени пользователя
+# # @dp.message_handler(lambda message: message.text.isalpha())
+# # async def handle_name(message: types.Message):
+# #     try:
+# #         username = message.text
+# #         await add_user(message.from_user.id, username)
+# #         await message.reply(f"Добро пожаловать, {username}!")
+# #         await asyncio.sleep(1)
+# #         await show_main_menu(message)
+# #     except Exception as e:
+# #         logging.error(f"Ошибка при обработке имени пользователя: {e}")
+# ######################################################################################################
+
+# # Главное меню с новыми кнопками
+# async def show_main_menu(message: types.Message):
+#     try:
+#         markup = InlineKeyboardMarkup()
+#         promo_code_btn = InlineKeyboardButton("Ввести промокод", callback_data='enter_promo')
+#         open_app_btn = InlineKeyboardButton("Открыть мини-приложение", url='https://botrichcars-3d6fdb98c849.herokuapp.com')  # Укажи ссылку на мини-приложение
+#         markup.add(promo_code_btn, open_app_btn)
+#         await message.reply("Выберите действие:", reply_markup=markup)
+#     except Exception as e:
+#         logging.error(f"Ошибка при отображении главного меню: {e}")
+
+# # Обработка нажатия на кнопку "Ввести промокод"
+# @dp.callback_query_handler(lambda c: c.data == 'enter_promo')
+# async def process_enter_promo(callback_query: types.CallbackQuery):
+#     try:
+#         await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
+#         dp.register_message_handler(handle_promo_code, state=None)  # Ждем промокод
+#     except Exception as e:
+#         logging.error(f"Ошибка при запросе промокода: {e}")
+
+
+
+# # Обработка промокода
+# async def handle_promo_code(message: types.Message):
+#     promo_code = message.text
+#     if promo_code == "HAMSTER2024":  # Пример проверочного кода
+#         await message.reply("Промокод принят! Вы получили бонус.")
+#         # Здесь можно добавить логику для начисления бонусов или других действий
+#     else:
+#         await message.reply("Неверный промокод. Попробуйте снова.")
+
+
+# # Генерация промокодов с подпиской
+# def create_subscription_buttons(channels):
+#     markup = InlineKeyboardMarkup()
+#     for channel in channels:
+#         markup.add(InlineKeyboardButton(text=f"Подписаться на {channel}", url=f"https://t.me/{channel}"))
+#     return markup
+
+
+
+# # Создание кнопок для подписки на канал
+# async def check_all_subscriptions(user_id, channels):
+#     subscribed_channels = []
+    
+#     for channel in channels:
+#         try:
+#             member = await bot.get_chat_member(chat_id=channel, user_id=user_id)
+#             if member.status in ['member', 'administrator', 'creator']:
+#                 subscribed_channels.append(channel)
+#         except Exception as e:
+#             logging.error(f"Ошибка проверки канала {channel}: {e}")
+    
+#     )return len(subscribed_channels) == len(channels)
+
+
+
+# # Обработка запроса для продвинутого, специального и обычного промокодов:
+# @dp.callback_query_handler(lambda c: c.data == 'enter_advanced_promo_code')
+# async def process_advanced_promo_code(callback_query: types.CallbackQuery):
+#     user_id = callback_query.from_user.id
+    
+#     # Список каналов для продвинутого промокода (5 каналов)
+#     advanced_channels = ['channel1', 'channel2', 'channel3', 'channel4', 'channel5']
+    
+#     # Генерируем кнопки для подписки
+#     markup = create_subscription_buttons(advanced_channels)
+
+#     # Проверяем подписан ли пользователь на все каналы
+#     if await check_all_subscriptions(user_id, advanced_channels):
+#         promo_code, reward, expiration_time = await create_promo_code(user_id, 'advanced')
+#         await bot.send_message(user_id, f"Ваш продвинутый промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
+#     else:
+#         await bot.send_message(user_id, "Чтобы получить продвинутый промокод, подпишитесь на все каналы:", reply_markup=markup)
+
+# )@dp.callback_query_handler(lambda c: c.data == 'enter_special_promo_code')
+# async def process_special_promo_code(callback_query: types.CallbackQuery):
+#     user_id = callback_query.from_user.id
+    
+#     # Список каналов для специального промокода (12 каналов)
+#     special_channels = ['channel1', 'channel2', 'channel3', 'channel4', 'channel5', 'channel6', 'channel7', 'channel8', 'channel9', 'channel10', 'channel11', 'channel12']
+    
+#     # Генерируем кнопки для подписки
+#     markup = create_subscription_buttons(special_channels)
+
+#     # Проверяем подписан ли пользователь на все каналы
+#     if await check_all_subscriptions(user_id, special_channels):
+#         promo_code, reward, expiration_time = await create_promo_code(user_id, 'special')
+#         await bot.send_message(user_id, f"Ваш специальный промокод: {promo_code}. Он действителен до {expiration_time} и принесет вам {reward} монет.")
+#     else:
+#         await bot.send_message(user_id, "Чтобы получить специальный промокод, подпишитесь на все каналы:", reply_markup=markup)
+
+
+
+# # Запуск бота и базы данных
+# async def main():
+#     try:
+#         await init_db()  # Инициализация базы данных
+#         await dp.start_polling()  # Запуск бота
+#     except Exception as e:
+#         logging.error(f"Ошибка при запуске бота: {e}")
+
+# )if __name__ == '__main__':
+#     try:
+#         asyncio.run(main())
+#     except (KeyboardInterrupt, SystemExit):
+#         logging.info("Бот остановлен.")
+################################################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
