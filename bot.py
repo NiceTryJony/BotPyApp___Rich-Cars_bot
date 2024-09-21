@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 import asyncio
 from aiogram import Bot, Dispatcher, types
-from database import init_db, add_user, get_user, update_user_balance, get_user_balance
+from database import init_db , add_user, get_user, update_user_balance, check_tables, get_user_balance
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ChatMemberStatus
 from datetime import datetime, timedelta
 
@@ -27,7 +27,7 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 # Генерация промокодов
-async def generate_promo_codes():
+async def insert_promo_codes():
     promo_codes = [
         ('CODE1', 'normal', 10),
         ('CODE2', 'normal', 10),
@@ -43,15 +43,24 @@ async def generate_promo_codes():
         ('ADVANCED3', 'advanced', 450),
     ]
 
-    expiration_time = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')
-
-    async with aiosqlite.connect(DB_NAME) as conn:
-        async with conn.cursor() as cursor:
-            await cursor.execute('DELETE FROM promo_codes')
+    expiration_time = (datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')
+    try:
+        async with aiosqlite.connect(DB_NAME) as conn:
+            logging.info("Вставка заранее подготовленных промокодов в базу данных")
+            await conn.execute('DELETE FROM promo_codes')  # Очистка таблицы перед вставкой новых данных
             for code, category, reward in promo_codes:
-                await cursor.execute('INSERT INTO promo_codes (code, category, reward, expiration_time) VALUES (?, ?, ?, ?)',
-                                     (code, category, reward, expiration_time))
+                logging.info(f"Добавляем промокод: {code}, категория: {category}, награда: {reward}")
+                await conn.execute(
+                    'INSERT INTO promo_codes (code, category, reward, expiration_time) VALUES (?, ?, ?, ?)',
+                    (code, category, reward, expiration_time)
+                )
             await conn.commit()
+            logging.info("Промокоды успешно вставлены в базу данных")
+    except Exception as e:
+        logging.error(f"Ошибка при вставке промокодов: {e}")
+
+
+
 
 # Обработка команды /start
 @dp.message_handler(commands=['start'])
@@ -115,7 +124,7 @@ async def process_activate_promo(callback_query: types.CallbackQuery):
     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
     dp.register_message_handler(handle_promo_code)  # Ждем промокод
 
-# Логика обработки введенного промокода
+
 async def handle_promo_code(message: types.Message):
     promo_code = message.text.strip()
     async with aiosqlite.connect(DB_NAME) as conn:
@@ -135,17 +144,40 @@ async def handle_promo_code(message: types.Message):
             else:
                 await message.reply("Неверный промокод. Попробуйте снова.")
 
+
+
+# Логика обработки введенного промокода
+# async def handle_promo_code(message: types.Message):
+#     promo_code = message.text.strip()
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+#             result = await cursor.fetchone()
+
+#             if result:
+#                 reward, expiration_time = result
+#                 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+#                 if now < expiration_time:
+#                     await update_user_balance(message.from_user.id, reward)
+#                     await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+#                 else:
+#                     await message.reply("Промокод истек.")
+#             else:
+#                 await message.reply("Неверный промокод. Попробуйте снова.")
+
 # Запуск бота и инициализация базы данных
 async def main():
     try:
-        await init_db()
-        await generate_promo_codes()
+        await init_db()  # Сначала инициализируем базу данных
+        await check_tables()
+        await insert_promo_codes()  # Затем вставляем промокоды
+        logging.info("Бот успешно запущен.")
     except Exception as e:
         logging.error(f"Ошибка при запуске бота: {e}")
 
 if __name__ == '__main__':
     asyncio.run(main())
-
 
 
 
