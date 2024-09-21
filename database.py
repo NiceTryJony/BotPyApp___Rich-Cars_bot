@@ -10,6 +10,18 @@ async def init_db():
         async with conn.cursor() as cursor:
             await cursor.execute('PRAGMA journal_mode=WAL;')
 
+                # Создание таблицы promo_codes
+            await cursor.execute('''
+                CREATE TABLE IF NOT EXISTS promo_codes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    code TEXT NOT NULL UNIQUE,
+                    category TEXT NOT NULL,
+                    reward INTEGER NOT NULL,
+                    expiration_time TEXT NOT NULL
+                )
+            ''')
+
+
         # Создание таблицы users
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS users (
@@ -19,6 +31,7 @@ async def init_db():
                     is_subscribed BOOLEAN DEFAULT FALSE
                 )
             ''')
+
         # Создание таблицы cars        
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS cars (
@@ -28,6 +41,7 @@ async def init_db():
                     power REAL NOT NULL
                 )
             ''')
+
         # Создание таблицы purchases
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS purchases (
@@ -38,6 +52,7 @@ async def init_db():
                     FOREIGN KEY(car_id) REFERENCES cars(car_id) ON DELETE CASCADE
                 )
             ''')
+
         # Создание таблицы earnings
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS earnings (
@@ -48,16 +63,7 @@ async def init_db():
                     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
                 )
             ''')
-        # Создание таблицы promo_codes
-            await cursor.execute('''
-                CREATE TABLE IF NOT EXISTS promo_codes (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    code TEXT NOT NULL UNIQUE,
-                    category TEXT NOT NULL,
-                    reward INTEGER NOT NULL,
-                    expiration_time TEXT NOT NULL
-                )
-            ''')
+
         # Создание таблицы channels
             await cursor.execute('''
                 CREATE TABLE IF NOT EXISTS channels (
@@ -67,7 +73,8 @@ async def init_db():
                     promo_type TEXT NOT NULL
                 )
             ''')
-        # Создание таблицы VALUES
+
+        # Вставка данных в таблицу channels
             await cursor.execute('''
                 INSERT OR IGNORE INTO channels (name, link, promo_type) VALUES
                 ('Channel 1', 'https://t.me/channel1', 'regular'),
@@ -77,7 +84,7 @@ async def init_db():
             await conn.commit()
 
 
-
+# Добавление пользователя
 async def add_user(user_id, username):
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
@@ -85,8 +92,9 @@ async def add_user(user_id, username):
                 await cursor.execute('''INSERT OR IGNORE INTO users (user_id, username) VALUES (?, ?)''', (user_id, username))
                 await conn.commit()
     except Exception as e:
-        logging.error(f"Ошибка при добавлении пользователя {user_id}: {e}")
+        logging.error(f"Ошибка при добавлении пользователя {user_id}: {e}", exc_info=True)
 
+# Получение информации о пользователе
 async def get_user(user_id):
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
@@ -99,28 +107,29 @@ async def get_user(user_id):
                     logging.warning(f"Пользователь с ID {user_id} не найден.")
                     return None
     except Exception as e:
-        logging.error(f"Ошибка при получении пользователя {user_id}: {e}")
+        logging.error(f"Ошибка при получении пользователя {user_id}: {e}", exc_info=True)
 
+# Обновление баланса пользователя
 async def update_user_balance(user_id, amount):
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
                 await cursor.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
-                if await cursor.fetchone() is None:
+                result = await cursor.fetchone()
+                if result is None:
                     raise ValueError("Пользователь не найден.")
-                
-                new_balance = await get_user_balance(user_id) + amount
+
+                new_balance = result[0] + amount
                 if new_balance < 0:
                     raise ValueError("Недостаточно средств.")
-                
+
                 await cursor.execute('''UPDATE users SET balance = ? WHERE user_id = ?''', (new_balance, user_id))
                 await conn.commit()
     except Exception as e:
-        logging.error(f"Ошибка при обновлении баланса пользователя {user_id}: {e}")
+        logging.error(f"Ошибка при обновлении баланса пользователя {user_id}: {e}", exc_info=True)
 
 
-
-
+# Логирование дохода
 async def log_earning(user_id, amount):
     try:    
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -130,11 +139,9 @@ async def log_earning(user_id, amount):
                 await conn.commit()
                 logging.info(f"Логирование дохода: пользователь {user_id}, сумма {amount}.")
     except Exception as e:
-        logging.error(f"Ошибка при добавлении дохода {user_id}: {e}")
+        logging.error(f"Ошибка при добавлении дохода {user_id}: {e}", exc_info=True)
 
-
-
-
+# Получение цены автомобиля
 async def get_car_price(car_id):
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
@@ -147,12 +154,9 @@ async def get_car_price(car_id):
                     logging.warning(f"Машина с ID {car_id} не найдена.")
                     return None
     except Exception as e:
-        logging.error(f"Ошибка при получении машины {car_id}: {e}")
+        logging.error(f"Ошибка при получении машины {car_id}: {e}", exc_info=True)
 
-
-
-
-
+# Получение баланса пользователя
 async def get_user_balance(user_id):
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
@@ -161,7 +165,15 @@ async def get_user_balance(user_id):
                 result = await cursor.fetchone()
                 return result[0] if result else 0
     except Exception as e:
-        logging.error(f"Ошибка при получении баланса пользователя {user_id}: {e}")
+        logging.error(f"Ошибка при получении баланса пользователя {user_id}: {e}", exc_info=True)
+
+
+
+
+
+
+
+
 
 
 
