@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import asyncio
 from aiogram import Bot, Dispatcher, types
 from database import init_db, add_user, get_user, update_user_balance, get_user_balance
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ChatMemberStatus
 from datetime import datetime, timedelta
 
 # Загрузка переменных окружения
@@ -59,16 +59,69 @@ async def generate_promo_codes():
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
     try:
-        user = await get_user(message.from_user.id)
+        user_id = message.from_user.id
+        username = message.from_user.username
+
+        # 1. Проверяем, зарегистрирован ли пользователь
+        user = await get_user(user_id)
         if user:
+            # Если пользователь уже зарегистрирован
             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
         else:
-            await message.reply("Привет! Введите ваше имя, чтобы начать.")
-            return
+            # Если пользователь новый, регистрируем его
+            await add_user(user_id, username)
+            await message.reply("Привет! Вы новый пользователь. Введите ваше имя, чтобы начать.")
+            return  # Завершаем обработку команды, пока пользователь не введет имя
 
-        await show_main_menu(message)
+        # 2. Проверяем подписку на каналы
+        if await check_subscription(user_id, bot):
+            # Если пользователь подписан на оба канала
+            await message.reply("Вы подписаны на оба канала! Добро пожаловать!")
+            # Переходим к главному меню
+            await show_main_menu(message)
+        else:
+            # Если пользователь не подписан на оба канала
+            await message.reply("Пожалуйста, подпишитесь на оба канала, чтобы продолжить:")
+            await message.reply(f"1. {CHANNEL_ID_1}\n2. {CHANNEL_ID_2}")
+            
+            # Кнопка для повторной проверки подписки
+            markup = InlineKeyboardMarkup()
+            check_btn = InlineKeyboardButton("Проверить подписку", callback_data='check_subscription')
+            markup.add(check_btn)
+            await message.reply("После подписки нажмите кнопку ниже для проверки:", reply_markup=markup)
+    
     except Exception as e:
         logging.error(f"Ошибка при обработке команды /start: {e}")
+
+
+
+
+
+# Идентификаторы каналов
+CHANNEL_ID_1 = '@KLEV_TON'  # Замените на ваш первый канал
+CHANNEL_ID_2 = '@HMSTR_KOMBAT_BOT'  # Замените на ваш второй канал
+
+# Проверка подписки пользователя на оба канала
+async def check_subscription(user_id: int, bot: Bot) -> bool:
+    try:
+        # Проверка подписки на первый канал
+        member_1 = await bot.get_chat_member(chat_id=CHANNEL_ID_1, user_id=user_id)
+        # Проверка подписки на второй канал
+        member_2 = await bot.get_chat_member(chat_id=CHANNEL_ID_2, user_id=user_id)
+
+        # Проверка, что пользователь в обоих каналах как минимум является подписчиком
+        if member_1.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER] and \
+           member_2.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
+            return True
+        else:
+            return False
+    except Exception as e:
+        logging.error(f"Ошибка при проверке подписки для пользователя {user_id}: {e}")
+        return False
+
+
+
+
 
 # Главное меню
 async def show_main_menu(message: types.Message):
@@ -84,7 +137,31 @@ async def show_main_menu(message: types.Message):
 @dp.callback_query_handler(lambda c: c.data == 'activate_promo')
 async def process_activate_promo(callback_query: types.CallbackQuery):
     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
-    dp.register_message_handler(handle_promo_code, state=None)  # Ждем промокод
+    dp.register_message_handler(handle_promo_code)  # Ждем промокод
+
+
+
+
+# # Главное меню
+# async def show_main_menu(message: types.Message):
+#     try:
+#         markup = InlineKeyboardMarkup()
+#         promo_code_btn = InlineKeyboardButton("Активировать промокод", callback_data='activate_promo')
+#         markup.add(promo_code_btn)
+#         await message.reply("Выберите действие:", reply_markup=markup)
+#     except Exception as e:
+#         logging.error(f"Ошибка при отображении главного меню: {e}")
+
+# # Обработка промокода
+# @dp.callback_query_handler(lambda c: c.data == 'activate_promo')
+# async def process_activate_promo(callback_query: types.CallbackQuery):
+#     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
+#     dp.register_message_handler(handle_promo_code, state=None)  # Ждем промокод
+
+
+
+
+
 
 # Логика обработки введенного промокода
 async def handle_promo_code(message: types.Message):
@@ -95,7 +172,7 @@ async def handle_promo_code(message: types.Message):
             result = await cursor.fetchone()
 
             if result:
-                reward, expiration_time = result
+                reward, expiration_time = result, category = result
                 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
                 if now < expiration_time:
@@ -106,7 +183,32 @@ async def handle_promo_code(message: types.Message):
             else:
                 await message.reply("Неверный промокод. Попробуйте снова.")
 
+
+# # Логика обработки введенного промокода
+# async def handle_promo_code(message: types.Message):
+#     promo_code = message.text.strip()
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+#             result = await cursor.fetchone()
+
+#             if result:
+#                 reward, expiration_time = result, category = result
+#                 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+#                 if now < expiration_time:
+#                     await update_user_balance(message.from_user.id, reward)
+#                     await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+#                 else:
+#                     await message.reply("Промокод истек.")
+#             else:
+#                 await message.reply("Неверный промокод. Попробуйте снова.")
+
+
+
+
 # Запуск бота и инициализация базы данных
+
 async def main():
     try:
         await init_db()  # Инициализация базы данных
