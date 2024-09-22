@@ -17,7 +17,7 @@ async def check_tables():
 
 
 async def init_db():
-    logging.info("Инициализация базы данных начата.")
+    logging.info("Инициализация базы данных начата........................................................................................................................................")
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
             # Установка режима WAL (журнал транзакций)
@@ -165,94 +165,6 @@ async def update_user_balance(user_id, amount):
     except Exception as e:
         logging.error(f"Ошибка при обновлении баланса пользователя {user_id}: {e}", exc_info=True)
 
-
-# Логирование дохода
-async def log_earning(user_id, amount):
-    try:    
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('''INSERT INTO earnings (user_id, amount, timestamp) VALUES (?, ?, ?)''', (user_id, amount, now))
-                await conn.commit()
-                logging.info(f"Логирование дохода: пользователь {user_id}, сумма {amount}.")
-    except Exception as e:
-        logging.error(f"Ошибка при добавлении дохода {user_id}: {e}", exc_info=True)
-
-# Получение цены автомобиля
-async def get_car_price(car_id):
-    try:
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('''SELECT price FROM cars WHERE car_id = ?''', (car_id,))
-                result = await cursor.fetchone()
-                if result:
-                    return result[0]
-                else:
-                    logging.warning(f"Машина с ID {car_id} не найдена.")
-                    return None
-    except Exception as e:
-        logging.error(f"Ошибка при получении машины {car_id}: {e}", exc_info=True)
-
-# Получение баланса пользователя
-async def get_user_balance(user_id):
-    try:
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('''SELECT balance FROM users WHERE user_id = ?''', (user_id,))
-                result = await cursor.fetchone()
-                return result[0] if result else 0
-    except Exception as e:
-        logging.error(f"Ошибка при получении баланса пользователя {user_id}: {e}", exc_info=True)
-
-
-
-
-
-
-
-# Добавление пользователя
-async def add_user(user_id, username):
-    try:
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('''INSERT OR IGNORE INTO users (user_id, username) VALUES (?, ?)''', (user_id, username))
-                await conn.commit()
-    except Exception as e:
-        logging.error(f"Ошибка при добавлении пользователя {user_id}: {e}", exc_info=True)
-
-# Получение информации о пользователе
-async def get_user(user_id):
-    try:
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('SELECT user_id, username, balance, is_subscribed FROM users WHERE user_id = ?', (user_id,))
-                row = await cursor.fetchone()
-                if row:
-                    return {'user_id': row[0], 'username': row[1], 'balance': row[2], 'is_subscribed': row[3]}
-                else:
-                    logging.warning(f"Пользователь с ID {user_id} не найден.")
-                    return None
-    except Exception as e:
-        logging.error(f"Ошибка при получении пользователя {user_id}: {e}", exc_info=True)
-
-# Обновление баланса пользователя
-async def update_user_balance(user_id, amount):
-    try:
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
-                result = await cursor.fetchone()
-                if result is None:
-                    raise ValueError("Пользователь не найден.")
-
-                new_balance = result[0] + amount
-                if new_balance < 0:
-                    raise ValueError("Недостаточно средств.")
-
-                await cursor.execute('''UPDATE users SET balance = ? WHERE user_id = ?''', (new_balance, user_id))
-                await conn.commit()
-    except Exception as e:
-        logging.error(f"Ошибка при обновлении баланса пользователя {user_id}: {e}", exc_info=True)
 
 # Логирование дохода
 async def log_earning(user_id, amount):

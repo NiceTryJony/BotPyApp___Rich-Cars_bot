@@ -46,7 +46,7 @@ async def insert_promo_codes():
     expiration_time = (datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
-            logging.info("Вставка заранее подготовленных промокодов в базу данных")
+            logging.info("Вставка заранее подготовленных промокодов в базу данных..........................................................................................................")
             await conn.execute('DELETE FROM promo_codes')  # Очистка таблицы перед вставкой новых данных
             for code, category, reward in promo_codes:
                 logging.info(f"Добавляем промокод: {code}, категория: {category}, награда: {reward}")
@@ -55,7 +55,7 @@ async def insert_promo_codes():
                     (code, category, reward, expiration_time)
                 )
             await conn.commit()
-            logging.info("Промокоды успешно вставлены в базу данных")
+            logging.info("Промокоды успешно вставлены в базу данных.................................................................................................................")
     except Exception as e:
         logging.error(f"Ошибка при вставке промокодов: {e}")
 
