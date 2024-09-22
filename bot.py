@@ -65,6 +65,7 @@ async def insert_promo_codes():
 # Обработка команды /start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
+    await message.reply("TEST")
     try:
         user_id = message.from_user.id
         username = message.from_user.username
@@ -93,8 +94,8 @@ async def send_welcome(message: types.Message):
         logging.error(f"Ошибка при обработке команды /start: {e}")
 
 # Идентификаторы каналов
-CHANNEL_ID_1 = '@KLEV_TON'
-CHANNEL_ID_2 = '@HMSTR_KOMBAT_BOT'
+CHANNEL_ID_1 = '@RICH_CARSETA'
+CHANNEL_ID_2 = '@RICH_CARSETA'
 
 # Проверка подписки пользователя на оба канала
 async def check_subscription(user_id: int, bot: Bot) -> bool:
@@ -146,26 +147,6 @@ async def handle_promo_code(message: types.Message):
 
 
 
-# Логика обработки введенного промокода
-# async def handle_promo_code(message: types.Message):
-#     promo_code = message.text.strip()
-#     async with aiosqlite.connect(DB_NAME) as conn:
-#         async with conn.cursor() as cursor:
-#             await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
-#             result = await cursor.fetchone()
-
-#             if result:
-#                 reward, expiration_time = result
-#                 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-#                 if now < expiration_time:
-#                     await update_user_balance(message.from_user.id, reward)
-#                     await message.reply(f"Промокод принят! Вы получили {reward} монет.")
-#                 else:
-#                     await message.reply("Промокод истек.")
-#             else:
-#                 await message.reply("Неверный промокод. Попробуйте снова.")
-
 # Запуск бота и инициализация базы данных
 async def main():
     try:
@@ -173,6 +154,7 @@ async def main():
         await check_tables()
         await insert_promo_codes()  # Затем вставляем промокоды
         logging.info("Бот успешно запущен.")
+        await dp.start_polling()  # Запуск бота
     except Exception as e:
         logging.error(f"Ошибка при запуске бота: {e}")
 

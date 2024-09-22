@@ -289,3 +289,303 @@
 2024-09-22 01:36:41,550 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
 2024-09-22 01:36:41,552 [INFO] Промокоды успешно вставлены в базу данных
 2024-09-22 01:36:41,554 [INFO] Бот успешно запущен.
+2024-09-22 01:44:17,022 [INFO] Инициализация базы данных начата.
+2024-09-22 01:44:17,026 [INFO] Таблица users создается
+2024-09-22 01:44:17,027 [INFO] Таблица users успешно создана или уже существует.
+2024-09-22 01:44:17,028 [INFO] Таблица cars создается
+2024-09-22 01:44:17,028 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-22 01:44:17,029 [INFO] Таблица purchases создается
+2024-09-22 01:44:17,029 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-22 01:44:17,030 [INFO] Таблица earnings создается
+2024-09-22 01:44:17,030 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-22 01:44:17,030 [INFO] Таблица channels создается
+2024-09-22 01:44:17,031 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-22 01:44:17,031 [INFO] Добавление данных в таблицу channels
+2024-09-22 01:44:17,031 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-22 01:44:17,031 [INFO] Таблица promo_codes создается
+2024-09-22 01:44:17,032 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-22 01:44:17,036 [INFO] Инициализация базы данных завершена.
+2024-09-22 01:44:17,039 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-22 01:44:17,041 [INFO] Вставка заранее подготовленных промокодов в базу данных
+2024-09-22 01:44:17,043 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-22 01:44:17,043 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-22 01:44:17,043 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-22 01:44:17,044 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-22 01:44:17,044 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-22 01:44:17,045 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-22 01:44:17,045 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-22 01:44:17,045 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-22 01:44:17,046 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-22 01:44:17,046 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-22 01:44:17,046 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-22 01:44:17,047 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-22 01:44:17,048 [INFO] Промокоды успешно вставлены в базу данных
+2024-09-22 01:44:17,050 [INFO] Бот успешно запущен.
+2024-09-22 01:51:06,765 [INFO] Инициализация базы данных начата.
+2024-09-22 01:51:06,768 [INFO] Таблица users создается
+2024-09-22 01:51:06,768 [INFO] Таблица users успешно создана или уже существует.
+2024-09-22 01:51:06,768 [INFO] Таблица cars создается
+2024-09-22 01:51:06,769 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-22 01:51:06,769 [INFO] Таблица purchases создается
+2024-09-22 01:51:06,769 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-22 01:51:06,769 [INFO] Таблица earnings создается
+2024-09-22 01:51:06,770 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-22 01:51:06,770 [INFO] Таблица channels создается
+2024-09-22 01:51:06,770 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-22 01:51:06,770 [INFO] Добавление данных в таблицу channels
+2024-09-22 01:51:06,771 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-22 01:51:06,771 [INFO] Таблица promo_codes создается
+2024-09-22 01:51:06,771 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-22 01:51:06,776 [INFO] Инициализация базы данных завершена.
+2024-09-22 01:51:06,778 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-22 01:51:06,780 [INFO] Вставка заранее подготовленных промокодов в базу данных
+2024-09-22 01:51:06,781 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-22 01:51:06,781 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-22 01:51:06,782 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-22 01:51:06,782 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-22 01:51:06,782 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-22 01:51:06,784 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-22 01:51:06,784 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-22 01:51:06,784 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-22 01:51:06,785 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-22 01:51:06,785 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-22 01:51:06,785 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-22 01:51:06,785 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-22 01:51:06,789 [INFO] Промокоды успешно вставлены в базу данных
+2024-09-22 01:51:06,790 [INFO] Бот успешно запущен.
+2024-09-22 01:57:35,470 [INFO] Инициализация базы данных начата.
+2024-09-22 01:57:35,473 [INFO] Таблица users создается
+2024-09-22 01:57:35,474 [INFO] Таблица users успешно создана или уже существует.
+2024-09-22 01:57:35,474 [INFO] Таблица cars создается
+2024-09-22 01:57:35,475 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-22 01:57:35,475 [INFO] Таблица purchases создается
+2024-09-22 01:57:35,475 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-22 01:57:35,475 [INFO] Таблица earnings создается
+2024-09-22 01:57:35,475 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-22 01:57:35,476 [INFO] Таблица channels создается
+2024-09-22 01:57:35,476 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-22 01:57:35,476 [INFO] Добавление данных в таблицу channels
+2024-09-22 01:57:35,476 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-22 01:57:35,477 [INFO] Таблица promo_codes создается
+2024-09-22 01:57:35,477 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-22 01:57:35,481 [INFO] Инициализация базы данных завершена.
+2024-09-22 01:57:35,485 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-22 01:57:35,487 [INFO] Вставка заранее подготовленных промокодов в базу данных
+2024-09-22 01:57:35,489 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-22 01:57:35,489 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-22 01:57:35,490 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-22 01:57:35,491 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-22 01:57:35,491 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-22 01:57:35,491 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-22 01:57:35,492 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-22 01:57:35,492 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-22 01:57:35,493 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-22 01:57:35,493 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-22 01:57:35,493 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-22 01:57:35,494 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-22 01:57:35,495 [INFO] Промокоды успешно вставлены в базу данных
+2024-09-22 01:57:35,497 [INFO] Бот успешно запущен.
+2024-09-22 01:57:35,497 [INFO] Start polling.
+2024-09-22 01:57:46,960 [WARNING] Пользователь с ID 5598142592 не найден.
+2024-09-22 01:57:47,371 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:57:47,374 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:57:47,375 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:57:47,376 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:57:47,377 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:57:47,396 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:57:47,426 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:57:47,448 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 01:58:33,525 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 02:01:31,574 [ERROR] Ошибка при проверке подписки для пользователя 5598142592: Member list is inaccessible
+2024-09-22 02:02:01,730 [INFO] Инициализация базы данных начата.
+2024-09-22 02:02:01,733 [INFO] Таблица users создается
+2024-09-22 02:02:01,733 [INFO] Таблица users успешно создана или уже существует.
+2024-09-22 02:02:01,733 [INFO] Таблица cars создается
+2024-09-22 02:02:01,734 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-22 02:02:01,734 [INFO] Таблица purchases создается
+2024-09-22 02:02:01,735 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-22 02:02:01,735 [INFO] Таблица earnings создается
+2024-09-22 02:02:01,735 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-22 02:02:01,736 [INFO] Таблица channels создается
+2024-09-22 02:02:01,736 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-22 02:02:01,736 [INFO] Добавление данных в таблицу channels
+2024-09-22 02:02:01,737 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-22 02:02:01,737 [INFO] Таблица promo_codes создается
+2024-09-22 02:02:01,737 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-22 02:02:01,741 [INFO] Инициализация базы данных завершена.
+2024-09-22 02:02:01,744 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-22 02:02:01,747 [INFO] Вставка заранее подготовленных промокодов в базу данных
+2024-09-22 02:02:01,749 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-22 02:02:01,749 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-22 02:02:01,749 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-22 02:02:01,750 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-22 02:02:01,750 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-22 02:02:01,751 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-22 02:02:01,751 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-22 02:02:01,751 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-22 02:02:01,752 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-22 02:02:01,752 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-22 02:02:01,752 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-22 02:02:01,752 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-22 02:02:01,754 [INFO] Промокоды успешно вставлены в базу данных
+2024-09-22 02:02:01,756 [INFO] Бот успешно запущен.
+2024-09-22 02:02:01,756 [INFO] Start polling.
+2024-09-22 02:02:01,926 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:07,114 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:12,237 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:17,291 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:22,335 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:27,395 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:32,526 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:37,579 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-22 02:02:41,267 [WARNING] Polling is stopped.
+2024-09-22 02:02:41,301 [INFO] Stop polling...
+2024-09-22 02:02:41,302 [ERROR] Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001D20B475AD0>
+2024-09-22 02:02:41,302 [ERROR] Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x000001D20B470910>, 132306.89)]']
+connector: <aiohttp.connector.TCPConnector object at 0x000001D20AC41FD0>
