@@ -29,8 +29,7 @@ async def init_db():
                 CREATE TABLE IF NOT EXISTS users (
                     user_id INTEGER PRIMARY KEY,
                     username TEXT NOT NULL,
-                    balance REAL DEFAULT 0,
-                    is_subscribed BOOLEAN DEFAULT FALSE
+                    balance REAL DEFAULT 0
                 )
             ''')
             logging.info("Таблица users успешно создана или уже существует.")
@@ -145,25 +144,13 @@ async def get_user(user_id):
                     return {'user_id': row[0], 
                             'username': row[1],
                             'balance': row[2], 
-                            'is_subscribed': row[3],
-                            'link_status': row[4]  # Получаем статус перехода
+                            'is_subscribed': row[3]
                             }
                 else:
                     logging.warning(f"Пользователь с ID {user_id} не найден.")
                     return None
     except Exception as e:
         logging.error(f"Ошибка при получении пользователя {user_id}: {e}", exc_info=True)
-
-# Обновление статуса перехода
-async def update_link_status(user_id, status):
-    try:
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('''UPDATE users SET link_status = ? WHERE user_id = ?''', (status, user_id))
-                await conn.commit()
-    except Exception as e:
-        logging.error(f"Ошибка при обновлении статуса перехода для пользователя {user_id}: {e}", exc_info=True)
-
 
 
 
