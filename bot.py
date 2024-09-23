@@ -61,6 +61,7 @@ async def insert_promo_codes():
 
 
 
+
 # Обработка команды /start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
@@ -84,56 +85,13 @@ async def send_welcome(message: types.Message):
             await message.reply("Пожалуйста, подпишитесь на оба канала, чтобы продолжить:")
             await message.reply(f"1. {CHANNEL_ID_1}\n2. {CHANNEL_ID_2}")
 
-            # Создаем только кнопку "Проверить подписку"
             markup = InlineKeyboardMarkup()
-            check_btn = InlineKeyboardButton("Проверить подписку", callback_data='restart')  # Используем callback 'restart'
+            check_btn = InlineKeyboardButton("Проверить подписку", callback_data='send_welcome')
             markup.add(check_btn)
             await message.reply("После подписки нажмите кнопку ниже для проверки:", reply_markup=markup)
-
+    
     except Exception as e:
         logging.error(f"Ошибка при обработке команды /start: {e}")
-
-# Обработчик нажатия на кнопку "Проверить подписку"
-@dp.callback_query_handler(lambda c: c.data == 'restart')
-async def process_restart_callback(callback_query: types.CallbackQuery):
-    # Имитируем действие команды /start
-    await send_welcome(callback_query.message)
-
-    # Закрываем всплывающее уведомление о нажатии на кнопку
-    await bot.answer_callback_query(callback_query.id)
-
-
-
-# # Обработка команды /start
-# @dp.message_handler(commands=['start'])
-# async def send_welcome(message: types.Message):
-#     await message.reply("TESTiiii")
-#     try:
-#         user_id = message.from_user.id
-#         username = message.from_user.username
-
-#         user = await get_user(user_id)
-#         if user:
-#             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
-#         else:
-#             await add_user(user_id, username)
-#             await message.reply("Привет! Вы новый пользователь. Введите ваше имя, чтобы начать.")
-#             return
-
-#         if await check_subscription(user_id, bot):
-#             await message.reply("Вы подписаны на оба канала! Добро пожаловать!")
-#             await show_main_menu(message)
-#         else:
-#             await message.reply("Пожалуйста, подпишитесь на оба канала, чтобы продолжить:")
-#             await message.reply(f"1. {CHANNEL_ID_1}\n2. {CHANNEL_ID_2}")
-
-#             markup = InlineKeyboardMarkup()
-#             check_btn = InlineKeyboardButton("Проверить подписку", callback_data='check_subscription')
-#             markup.add(check_btn)
-#             await message.reply("После подписки нажмите кнопку ниже для проверки:", reply_markup=markup)
-    
-#     except Exception as e:
-#         logging.error(f"Ошибка при обработке команды /start: {e}")
 
 # Идентификаторы каналов
 CHANNEL_ID_1 = '@RICH_CARSETA'
