@@ -65,7 +65,7 @@ async def insert_promo_codes():
 # Обработка команды /start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.reply("TEST")
+    await message.reply("TESTiiii")
     try:
         user_id = message.from_user.id
         username = message.from_user.username
@@ -95,7 +95,7 @@ async def send_welcome(message: types.Message):
 
 # Идентификаторы каналов
 CHANNEL_ID_1 = '@RICH_CARSETA'
-CHANNEL_ID_2 = '@RICH_CARSETA'
+CHANNEL_ID_2 = '@CHANEL_TRY'
 
 # Проверка подписки пользователя на оба канала
 async def check_subscription(user_id: int, bot: Bot) -> bool:

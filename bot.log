@@ -667,3 +667,336 @@ client_session: <aiohttp.client.ClientSession object at 0x000001E8BAD75DD0>
 2024-09-22 19:37:51,990 [INFO] Stop polling...
 2024-09-22 19:37:51,991 [ERROR] Unclosed client session
 client_session: <aiohttp.client.ClientSession object at 0x000001DE3306C690>
+2024-09-23 20:54:08,680 [INFO] Инициализация базы данных начата........................................................................................................................................
+2024-09-23 20:54:08,691 [INFO] Таблица users создается
+2024-09-23 20:54:08,691 [INFO] Таблица users успешно создана или уже существует.
+2024-09-23 20:54:08,691 [INFO] Таблица cars создается
+2024-09-23 20:54:08,691 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-23 20:54:08,691 [INFO] Таблица purchases создается
+2024-09-23 20:54:08,693 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-23 20:54:08,693 [INFO] Таблица earnings создается
+2024-09-23 20:54:08,693 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-23 20:54:08,693 [INFO] Таблица channels создается
+2024-09-23 20:54:08,693 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-23 20:54:08,693 [INFO] Добавление данных в таблицу channels
+2024-09-23 20:54:08,693 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-23 20:54:08,693 [INFO] Таблица promo_codes создается
+2024-09-23 20:54:08,693 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-23 20:54:08,697 [INFO] Инициализация базы данных завершена.
+2024-09-23 20:54:08,700 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-23 20:54:08,701 [INFO] Вставка заранее подготовленных промокодов в базу данных..........................................................................................................
+2024-09-23 20:54:08,702 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-23 20:54:08,703 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-23 20:54:08,704 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-23 20:54:08,704 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-23 20:54:08,704 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-23 20:54:08,704 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-23 20:54:08,706 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-23 20:54:08,706 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-23 20:54:08,706 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-23 20:54:08,706 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-23 20:54:08,706 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-23 20:54:08,706 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-23 20:54:08,710 [INFO] Промокоды успешно вставлены в базу данных.................................................................................................................
+2024-09-23 20:54:08,712 [INFO] Бот успешно запущен.
+2024-09-23 20:54:08,712 [INFO] Start polling.
+2024-09-23 20:54:20,186 [WARNING] Пользователь с ID 1592830036 не найден.
+2024-09-23 20:56:21,497 [WARNING] Polling is stopped.
+2024-09-23 20:56:21,510 [INFO] Stop polling...
+2024-09-23 20:56:21,510 [ERROR] Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000178BACD3490>
+2024-09-23 20:56:46,791 [INFO] Инициализация базы данных начата........................................................................................................................................
+2024-09-23 20:56:46,796 [INFO] Таблица users создается
+2024-09-23 20:56:46,796 [INFO] Таблица users успешно создана или уже существует.
+2024-09-23 20:56:46,796 [INFO] Таблица cars создается
+2024-09-23 20:56:46,797 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-23 20:56:46,797 [INFO] Таблица purchases создается
+2024-09-23 20:56:46,797 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-23 20:56:46,798 [INFO] Таблица earnings создается
+2024-09-23 20:56:46,798 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-23 20:56:46,798 [INFO] Таблица channels создается
+2024-09-23 20:56:46,798 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-23 20:56:46,798 [INFO] Добавление данных в таблицу channels
+2024-09-23 20:56:46,798 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-23 20:56:46,798 [INFO] Таблица promo_codes создается
+2024-09-23 20:56:46,798 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-23 20:56:46,804 [INFO] Инициализация базы данных завершена.
+2024-09-23 20:56:46,806 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-23 20:56:46,808 [INFO] Вставка заранее подготовленных промокодов в базу данных..........................................................................................................
+2024-09-23 20:56:46,810 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-23 20:56:46,810 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-23 20:56:46,810 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-23 20:56:46,811 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-23 20:56:46,811 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-23 20:56:46,811 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-23 20:56:46,812 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-23 20:56:46,812 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-23 20:56:46,812 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-23 20:56:46,813 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-23 20:56:46,813 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-23 20:56:46,814 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-23 20:56:46,816 [INFO] Промокоды успешно вставлены в базу данных.................................................................................................................
+2024-09-23 20:56:46,820 [INFO] Бот успешно запущен.
+2024-09-23 20:56:46,821 [INFO] Start polling.
+2024-09-23 20:57:52,870 [WARNING] Polling is stopped.
+2024-09-23 20:57:52,873 [INFO] Stop polling...
+2024-09-23 20:57:52,873 [ERROR] Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000255F7FBFD50>
+2024-09-23 20:58:21,055 [INFO] Инициализация базы данных начата........................................................................................................................................
+2024-09-23 20:58:21,057 [INFO] Таблица users создается
+2024-09-23 20:58:21,057 [INFO] Таблица users успешно создана или уже существует.
+2024-09-23 20:58:21,058 [INFO] Таблица cars создается
+2024-09-23 20:58:21,058 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-23 20:58:21,058 [INFO] Таблица purchases создается
+2024-09-23 20:58:21,060 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-23 20:58:21,060 [INFO] Таблица earnings создается
+2024-09-23 20:58:21,061 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-23 20:58:21,061 [INFO] Таблица channels создается
+2024-09-23 20:58:21,062 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-23 20:58:21,062 [INFO] Добавление данных в таблицу channels
+2024-09-23 20:58:21,062 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-23 20:58:21,062 [INFO] Таблица promo_codes создается
+2024-09-23 20:58:21,063 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-23 20:58:21,068 [INFO] Инициализация базы данных завершена.
+2024-09-23 20:58:21,073 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-23 20:58:21,076 [INFO] Вставка заранее подготовленных промокодов в базу данных..........................................................................................................
+2024-09-23 20:58:21,077 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-23 20:58:21,077 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-23 20:58:21,077 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-23 20:58:21,077 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-23 20:58:21,078 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-23 20:58:21,078 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-23 20:58:21,078 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-23 20:58:21,079 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-23 20:58:21,079 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-23 20:58:21,079 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-23 20:58:21,080 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-23 20:58:21,080 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-23 20:58:21,083 [INFO] Промокоды успешно вставлены в базу данных.................................................................................................................
+2024-09-23 20:58:21,085 [INFO] Бот успешно запущен.
+2024-09-23 20:58:21,085 [INFO] Start polling.
+2024-09-23 21:04:35,763 [WARNING] Polling is stopped.
+2024-09-23 21:04:35,781 [INFO] Stop polling...
+2024-09-23 21:04:35,782 [ERROR] Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001CE8D0BF9D0>
+2024-09-23 21:04:38,219 [INFO] Инициализация базы данных начата........................................................................................................................................
+2024-09-23 21:04:38,222 [INFO] Таблица users создается
+2024-09-23 21:04:38,223 [INFO] Таблица users успешно создана или уже существует.
+2024-09-23 21:04:38,223 [INFO] Таблица cars создается
+2024-09-23 21:04:38,224 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-23 21:04:38,224 [INFO] Таблица purchases создается
+2024-09-23 21:04:38,225 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-23 21:04:38,226 [INFO] Таблица earnings создается
+2024-09-23 21:04:38,226 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-23 21:04:38,227 [INFO] Таблица channels создается
+2024-09-23 21:04:38,227 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-23 21:04:38,227 [INFO] Добавление данных в таблицу channels
+2024-09-23 21:04:38,228 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-23 21:04:38,228 [INFO] Таблица promo_codes создается
+2024-09-23 21:04:38,229 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-23 21:04:38,236 [INFO] Инициализация базы данных завершена.
+2024-09-23 21:04:38,240 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-23 21:04:38,243 [INFO] Вставка заранее подготовленных промокодов в базу данных..........................................................................................................
+2024-09-23 21:04:38,246 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-23 21:04:38,248 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-23 21:04:38,248 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-23 21:04:38,249 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-23 21:04:38,250 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-23 21:04:38,251 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-23 21:04:38,251 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-23 21:04:38,252 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-23 21:04:38,252 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-23 21:04:38,252 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-23 21:04:38,253 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-23 21:04:38,253 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-23 21:04:38,255 [INFO] Промокоды успешно вставлены в базу данных.................................................................................................................
+2024-09-23 21:04:38,256 [INFO] Бот успешно запущен.
+2024-09-23 21:04:38,256 [INFO] Start polling.
+2024-09-23 21:05:17,651 [WARNING] Polling is stopped.
+2024-09-23 21:05:17,665 [INFO] Stop polling...
+2024-09-23 21:05:17,666 [ERROR] Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001FB94D8FD50>
+2024-09-23 21:05:20,421 [INFO] Инициализация базы данных начата........................................................................................................................................
+2024-09-23 21:05:20,424 [INFO] Таблица users создается
+2024-09-23 21:05:20,424 [INFO] Таблица users успешно создана или уже существует.
+2024-09-23 21:05:20,424 [INFO] Таблица cars создается
+2024-09-23 21:05:20,425 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-23 21:05:20,425 [INFO] Таблица purchases создается
+2024-09-23 21:05:20,425 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-23 21:05:20,425 [INFO] Таблица earnings создается
+2024-09-23 21:05:20,426 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-23 21:05:20,426 [INFO] Таблица channels создается
+2024-09-23 21:05:20,426 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-23 21:05:20,426 [INFO] Добавление данных в таблицу channels
+2024-09-23 21:05:20,427 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-23 21:05:20,427 [INFO] Таблица promo_codes создается
+2024-09-23 21:05:20,427 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-23 21:05:20,433 [INFO] Инициализация базы данных завершена.
+2024-09-23 21:05:20,435 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-23 21:05:20,438 [INFO] Вставка заранее подготовленных промокодов в базу данных..........................................................................................................
+2024-09-23 21:05:20,439 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-23 21:05:20,440 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-23 21:05:20,440 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-23 21:05:20,441 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-23 21:05:20,441 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-23 21:05:20,442 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-23 21:05:20,442 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-23 21:05:20,442 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-23 21:05:20,443 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-23 21:05:20,443 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-23 21:05:20,444 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-23 21:05:20,444 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-23 21:05:20,447 [INFO] Промокоды успешно вставлены в базу данных.................................................................................................................
+2024-09-23 21:05:20,450 [INFO] Бот успешно запущен.
+2024-09-23 21:05:20,450 [INFO] Start polling.
+2024-09-23 21:10:38,563 [WARNING] Polling is stopped.
+2024-09-23 21:10:39,262 [INFO] Stop polling...
+2024-09-23 21:10:39,263 [ERROR] Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000014AE9362310>
+2024-09-23 21:10:41,830 [INFO] Инициализация базы данных начата........................................................................................................................................
+2024-09-23 21:10:41,833 [INFO] Таблица users создается
+2024-09-23 21:10:41,834 [INFO] Таблица users успешно создана или уже существует.
+2024-09-23 21:10:41,834 [INFO] Таблица cars создается
+2024-09-23 21:10:41,834 [INFO] Таблица cars успешно создана или уже существует.
+2024-09-23 21:10:41,835 [INFO] Таблица purchases создается
+2024-09-23 21:10:41,835 [INFO] Таблица purchases успешно создана или уже существует.
+2024-09-23 21:10:41,835 [INFO] Таблица earnings создается
+2024-09-23 21:10:41,836 [INFO] Таблица earnings успешно создана или уже существует.
+2024-09-23 21:10:41,836 [INFO] Таблица channels создается
+2024-09-23 21:10:41,837 [INFO] Таблица channels успешно создана или уже существует.
+2024-09-23 21:10:41,837 [INFO] Добавление данных в таблицу channels
+2024-09-23 21:10:41,838 [INFO] Данные в таблицу channels успешно добавлены.
+2024-09-23 21:10:41,838 [INFO] Таблица promo_codes создается
+2024-09-23 21:10:41,838 [INFO] Таблица promo_codes успешно создана или уже существует.
+2024-09-23 21:10:41,844 [INFO] Инициализация базы данных завершена.
+2024-09-23 21:10:41,849 [INFO] Таблицы в базе данных: [('users',), ('cars',), ('purchases',), ('earnings',), ('sqlite_sequence',), ('channels',), ('promo_codes',)]
+2024-09-23 21:10:41,851 [INFO] Вставка заранее подготовленных промокодов в базу данных..........................................................................................................
+2024-09-23 21:10:41,852 [INFO] Добавляем промокод: CODE1, категория: normal, награда: 10
+2024-09-23 21:10:41,853 [INFO] Добавляем промокод: CODE2, категория: normal, награда: 10
+2024-09-23 21:10:41,853 [INFO] Добавляем промокод: CODE3, категория: normal, награда: 10
+2024-09-23 21:10:41,854 [INFO] Добавляем промокод: CODE4, категория: normal, награда: 30
+2024-09-23 21:10:41,854 [INFO] Добавляем промокод: CODE5, категория: normal, награда: 30
+2024-09-23 21:10:41,854 [INFO] Добавляем промокод: CODE6, категория: normal, награда: 50
+2024-09-23 21:10:41,855 [INFO] Добавляем промокод: SPECIAL1, категория: special, награда: 100
+2024-09-23 21:10:41,855 [INFO] Добавляем промокод: SPECIAL2, категория: special, награда: 150
+2024-09-23 21:10:41,855 [INFO] Добавляем промокод: SPECIAL3, категория: special, награда: 200
+2024-09-23 21:10:41,856 [INFO] Добавляем промокод: ADVANCED1, категория: advanced, награда: 350
+2024-09-23 21:10:41,856 [INFO] Добавляем промокод: ADVANCED2, категория: advanced, награда: 400
+2024-09-23 21:10:41,857 [INFO] Добавляем промокод: ADVANCED3, категория: advanced, награда: 450
+2024-09-23 21:10:41,859 [INFO] Промокоды успешно вставлены в базу данных.................................................................................................................
+2024-09-23 21:10:41,862 [INFO] Бот успешно запущен.
+2024-09-23 21:10:41,863 [INFO] Start polling.
+2024-09-23 21:12:23,038 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-23 21:12:33,136 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-23 21:12:43,217 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-23 21:12:53,306 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-23 21:13:03,428 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
+2024-09-23 21:13:13,512 [ERROR] Cause exception while getting updates.
+Traceback (most recent call last):
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 381, in start_polling
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\bot.py", line 110, in get_updates
+    result = await self.request(api.Methods.GET_UPDATES, payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\base.py", line 236, in request
+    return await api.make_request(await self.get_session(), self.server, self.__token, method, data, files,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\bot\api.py", line 119, in check_result
+    exceptions.ConflictError.detect(description)
+  File "C:\Users\Malam\OneDrive\Documents\GitHub\BotPYApp\.venv\Lib\site-packages\aiogram\utils\exceptions.py", line 140, in detect
+    raise err(cls.text or description)
+aiogram.utils.exceptions.TerminatedByOtherGetUpdates: Terminated by other getupdates request; make sure that only one bot instance is running
