@@ -97,17 +97,48 @@ async def send_welcome(message: types.Message):
 CHANNEL_ID_1 = '@RICH_CARSETA'
 CHANNEL_ID_2 = '@CHANEL_TRY'
 
-# Проверка подписки пользователя на оба канала
+
+# Проверка подписки пользователя на оба канала (NEW)
+
 async def check_subscription(user_id: int, bot: Bot) -> bool:
     try:
-        member_1 = await bot.get_chat_member(chat_id=CHANNEL_ID_1, user_id=user_id)
-        member_2 = await bot.get_chat_member(chat_id=CHANNEL_ID_2, user_id=user_id)
+        # Проверяем подписку на первый канал
+        logging.info("Начата проверка пользователя по подпискам на канал") 
+        try:
+            member_1 = await bot.get_chat_member(chat_id=CHANNEL_ID_1, user_id=user_id)
+            is_subscribed_1 = member_1.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
+        except Exception as e:
+            logging.error(f"Ошибка при проверке подписки на канал 1 для пользователя {user_id}: {e}")
+            is_subscribed_1 = False
 
-        return (member_1.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER] and
-                member_2.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER])
+        # Проверяем подписку на второй канал
+        try:
+            member_2 = await bot.get_chat_member(chat_id=CHANNEL_ID_2, user_id=user_id)
+            is_subscribed_2 = member_2.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
+        except Exception as e:
+            logging.error(f"Ошибка при проверке подписки на канал 2 для пользователя {user_id}: {e}")
+            is_subscribed_2 = False
+
+        # Возвращаем True только если пользователь подписан на оба канала
+        logging.info("Закончена проверка пользователя по подпискам на канал") 
+        return is_subscribed_1 and is_subscribed_2
+
     except Exception as e:
-        logging.error(f"Ошибка при проверке подписки для пользователя {user_id}: {e}")
+        logging.error(f"Общая ошибка при проверке подписки для пользователя {user_id}: {e}")
         return False
+
+# Проверка подписки пользователя на оба канала (OLD)
+
+# async def check_subscription(user_id: int, bot: Bot) -> bool:
+#     try:
+#         member_1 = await bot.get_chat_member(chat_id=CHANNEL_ID_1, user_id=user_id)
+#         member_2 = await bot.get_chat_member(chat_id=CHANNEL_ID_2, user_id=user_id)
+
+#         return (member_1.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER] and
+#                 member_2.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER])
+#     except Exception as e:
+#         logging.error(f"Ошибка при проверке подписки для пользователя {user_id}: {e}")
+#         return False
 
 # Главное меню
 async def show_main_menu(message: types.Message):
