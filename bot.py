@@ -326,6 +326,8 @@ async def show_main_menu(message: types.Message):
 
 
 
+
+
 @dp.callback_query_handler(lambda c: c.data == 'activate_promo')
 async def process_activate_promo(callback_query: types.CallbackQuery):
     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
@@ -352,6 +354,36 @@ async def process_activate_promo(callback_query: types.CallbackQuery):
 
     # Регистрация обработчика для обработки ввода промокода
     dp.register_message_handler(handle_promo_code, lambda m: m.from_user.id == callback_query.from_user.id)
+
+
+
+
+# )@dp.callback_query_handler(lambda c: c.data == 'activate_promo')
+# async def process_activate_promo(callback_query: types.CallbackQuery):
+#     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
+#     # Регистрация обработчика для промокодов без сохранения предыдущих
+#     @dp.message_handler(lambda m: m.from_user.id == callback_query.from_user.id)
+#     async def handle_promo_code(message: types.Message):
+#         promo_code = message.text.strip()
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+#                 result = await cursor.fetchone()
+
+#                 if result:
+#                     reward, expiration_time = result
+#                     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+#                     if now < expiration_time:
+#                         await update_user_balance(message.from_user.id, reward)
+#                         await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+#                     else:
+#                         await message.reply("Промокод истек.")
+#                 else:
+#                     await message.reply("Неверный промокод. Попробуйте снова.")
+
+#     # Регистрация обработчика для обработки ввода промокода
+#     dp.register_message_handler(handle_promo_code, lambda m: m.from_user.id == callback_query.from_user.id)
 
 
 
