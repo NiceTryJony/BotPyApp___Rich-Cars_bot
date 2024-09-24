@@ -8,6 +8,8 @@ from database import init_db , add_user, get_user, update_user_balance, check_ta
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ChatMemberStatus
 from datetime import datetime, timedelta
 from aiogram.utils.exceptions import ChatNotFound, BadRequest
+from aiogram.contrib.middlewares.logging import LoggingMiddleware
+
 
 
 # Загрузка переменных окружения
@@ -21,8 +23,8 @@ CHANNEL_ID_2 = '@CHANEL_TRY'
 
 # Настройка логирования
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
+    level=logging.DEBUG,
+    format='%(asctime)s [%(levelname)s] %(message)s %(name)s',
     handlers=[
         logging.FileHandler("bot.log", encoding='utf-8'),
         logging.StreamHandler()
@@ -31,6 +33,8 @@ logging.basicConfig(
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
+# Включаем middleware для логирования всех событий
+dp.middleware.setup(LoggingMiddleware())
 
 
 # Список каналов, на которые нужно подписаться
