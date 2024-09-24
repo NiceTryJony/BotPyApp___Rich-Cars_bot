@@ -83,6 +83,13 @@ async def init_db():
                     expiration_time TEXT NOT NULL
                 )
             ''')
+            await create_table(conn, "used_promo_codes", '''
+                CREATE TABLE IF NOT EXISTS used_promo_codes (
+                    user_id INTEGER,
+                    promo_code TEXT,
+                    PRIMARY KEY (user_id, promo_code)
+                )
+            ''')
 
             await conn.commit()
 

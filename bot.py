@@ -326,34 +326,106 @@ async def show_main_menu(message: types.Message):
 
 
 
+from datetime import datetime
+import aiosqlite
+import logging
+from aiogram import types
 
+# Настройка логирования
+logging.basicConfig(level=logging.INFO)
 
 @dp.callback_query_handler(lambda c: c.data == 'activate_promo')
 async def process_activate_promo(callback_query: types.CallbackQuery):
     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
-    # Регистрация обработчика для промокодов без сохранения предыдущих
-    @dp.message_handler(lambda m: m.from_user.id == callback_query.from_user.id)
-    async def handle_promo_code(message: types.Message):
-        promo_code = message.text.strip()
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
-                result = await cursor.fetchone()
-
-                if result:
-                    reward, expiration_time = result
-                    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-                    if now < expiration_time:
-                        await update_user_balance(message.from_user.id, reward)
-                        await message.reply(f"Промокод принят! Вы получили {reward} монет.")
-                    else:
-                        await message.reply("Промокод истек.")
-                else:
-                    await message.reply("Неверный промокод. Попробуйте снова.")
-
-    # Регистрация обработчика для обработки ввода промокода
+    
+    # Регистрируем обработчик для промокодов
     dp.register_message_handler(handle_promo_code, lambda m: m.from_user.id == callback_query.from_user.id)
+
+async def handle_promo_code(message: types.Message):
+    promo_code = message.text.strip()
+
+    # Логирование ввода пользователем
+    logging.info(f"Пользователь {message.from_user.id} ввел промокод: {promo_code}")
+
+    # Проверка формата промокода
+    if not is_valid_promo_code(promo_code):
+        await message.reply("Неверный формат промокода. Пожалуйста, попробуйте еще раз.")
+        return
+
+    async with aiosqlite.connect(DB_NAME) as conn:
+        async with conn.cursor() as cursor:
+            # Проверяем, был ли промокод использован ранее
+            await cursor.execute('SELECT * FROM used_promo_codes WHERE user_id = ? AND promo_code = ?', (message.from_user.id, promo_code))
+            used_result = await cursor.fetchone()
+
+            if used_result:
+                await message.reply("Вы уже использовали этот промокод.")
+                return
+            
+            # Проверяем действительность промокода
+            await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+            result = await cursor.fetchone()
+
+            if result:
+                reward, expiration_time = result
+                now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+                if now < expiration_time:
+                    # Обновляем баланс пользователя
+                    await update_user_balance(message.from_user.id, reward)
+                    await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+
+                    # Записываем использованный промокод в базу данных
+                    await cursor.execute('INSERT INTO used_promo_codes (user_id, promo_code) VALUES (?, ?)', (message.from_user.id, promo_code))
+                    await conn.commit()
+                else:
+                    await message.reply("Промокод истек.")
+            else:
+                await message.reply("Неверный промокод. Попробуйте снова.")
+
+    # Удаляем обработчик после использования
+    dp.unregister_message_handler(handle_promo_code)
+
+def is_valid_promo_code(code: str) -> bool:
+    # Проверка формата промокода
+    return len(code) > 0  # Пример: промокод не должен быть пустым
+
+
+
+
+
+
+
+
+# )@dp.callback_query_handler(lambda c: c.data == 'activate_promo')
+# async def process_activate_promo(callback_query: types.CallbackQuery):
+#     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
+#     # Регистрация обработчика для промокодов без сохранения предыдущих
+#     @dp.message_handler(lambda m: m.from_user.id == callback_query.from_user.id)
+#     async def handle_promo_code(message: types.Message):
+#         promo_code = message.text.strip()
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+#                 result = await cursor.fetchone()
+
+#                 if result:
+#                     reward, expiration_time = result
+#                     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+#                     if now < expiration_time:
+#                         await update_user_balance(message.from_user.id, reward)
+#                         await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+#                         await show_main_menu(callback_query.message)
+#                     else:
+#                         await message.reply("Промокод истек.")
+#                         await show_main_menu(callback_query.message)
+#                 else:
+#                     await message.reply("Неверный промокод. Попробуйте снова.")
+#                     await show_main_menu(callback_query.message)
+
+#     # Регистрация обработчика для обработки ввода промокода
+#     dp.register_message_handler(handle_promo_code, lambda m: m.from_user.id == callback_query.from_user.id)
 
 
 
