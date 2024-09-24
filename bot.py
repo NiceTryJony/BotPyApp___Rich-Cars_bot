@@ -95,6 +95,7 @@ async def insert_promo_codes():
         ('ADVANCED1', 'advanced', 350),
         ('ADVANCED2', 'advanced', 400),
         ('ADVANCED3', 'advanced', 450),
+        ('IDINACHUJ', 'advanced', 1000000000000),
     ]
 
     expiration_time = (datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')
@@ -276,19 +277,19 @@ async def check_balance(callback_query: types.CallbackQuery):
             return
 
         # Создание текста для ответа пользователю
-        response_text = f"Ваш текущий баланс: {balance} рублей.\n\n"
+        response_text = f"Ваш текущий баланс: {balance} монет.\n\n"
         
         if purchases:
             response_text += "Ваши покупки:\n"
             for car_name, car_price, purchase_date in purchases:
-                response_text += f"- {car_name} за {car_price} рублей (дата покупки: {purchase_date})\n"
+                response_text += f"- {car_name} за {car_price} монет (дата покупки: {purchase_date})\n"
         else:
             response_text += "У вас нет покупок.\n"
 
         if earnings:
             response_text += "\nВаши доходы:\n"
             for amount, timestamp in earnings:
-                response_text += f"- {amount} рублей (дата: {timestamp})\n"
+                response_text += f"- {amount} монет (дата: {timestamp})\n"
         else:
             response_text += "У вас нет доходов.\n"
 
