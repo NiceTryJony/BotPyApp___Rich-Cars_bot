@@ -7,6 +7,8 @@ from aiogram import Bot, Dispatcher, types
 from database import init_db , add_user, get_user, update_user_balance, check_tables, get_user_balance
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ChatMemberStatus
 from datetime import datetime, timedelta
+from aiogram.utils.exceptions import ChatNotFound, BadRequest
+
 
 # Загрузка переменных окружения
 load_dotenv()
@@ -29,6 +31,17 @@ logging.basicConfig(
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
+
+
+# Список каналов, на которые нужно подписаться
+CHANNELS = [
+    {'name': 'Channel 1', 'id': '@RICH_CARSETA'},
+    {'name': 'Channel 2', 'id': '@CHANEL_TRY'}
+    # Добавьте сюда дополнительные каналы в будущем
+    #{'name': 'Channel 3', 'id': '@your_channel_3'}
+]
+
+
 
 # Генерация промокодов
 async def insert_promo_codes():
@@ -64,83 +77,146 @@ async def insert_promo_codes():
         logging.error(f"Ошибка при вставке промокодов: {e}...........................................................................................................................")
 
 
-
-
 # Обработка команды /start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.reply("TESTiiii")
     try:
         user_id = message.from_user.id
         username = message.from_user.username
 
-        user = await get_user(user_id)
+        user = await get_user(user_id)  # Проверяем, есть ли пользователь в базе
+
         if user:
+            # Если пользователь существует в базе, приветствуем его
             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
         else:
+            # Если новый пользователь, добавляем его в базу и просим ввести имя
             await add_user(user_id, username)
             await message.reply("Привет! Вы новый пользователь. Введите ваше имя, чтобы начать.")
             return
 
-        if await check_subscription(user_id, bot):
-            await message.reply("Вы подписаны на оба канала! Добро пожаловать!")
+        # Проверка подписки на все каналы
+        not_subscribed_channels = []
+        for channel in CHANNELS:
+            is_subscribed = await check_subscription(user_id, channel['id'])
+            if not is_subscribed:
+                not_subscribed_channels.append(channel['name'])
+
+        if not not_subscribed_channels:
+            # Если пользователь подписан на все каналы, показываем главное меню
+            await message.reply("Вы подписаны на все каналы! Добро пожаловать!")
             await show_main_menu(message)
         else:
-            await message.reply("Пожалуйста, подпишитесь на оба канала, чтобы продолжить:")
-            await message.reply(f"1. {CHANNEL_ID_1}\n2. {CHANNEL_ID_2}")
+            # Если пользователь не подписан на некоторые каналы, просим его подписаться
+            channels_list = '\n'.join([f"{channel['name']}: {channel['id']}" for channel in CHANNELS])
+            await message.reply(f"Пожалуйста, подпишитесь на следующие каналы для продолжения:\n{channels_list}")
 
+            # Отправляем кнопку для проверки подписки
             markup = InlineKeyboardMarkup()
             check_btn = InlineKeyboardButton("Проверить подписку", callback_data='check_subscription')
             markup.add(check_btn)
             await message.reply("После подписки нажмите кнопку ниже для проверки:", reply_markup=markup)
 
     except Exception as e:
-        logging.error(f"Ошибка при обработке команды /start: {e}................................................................................................................")
+        logging.error(f"Ошибка при обработке команды /start: {e}...........................................................................................................")
+
+# # Обработка команды /start
+# @dp.message_handler(commands=['start'])
+# async def send_welcome(message: types.Message):
+#     await message.reply("TESTiiii")
+#     try:
+#         user_id = message.from_user.id
+#         username = message.from_user.username
+
+#         user = await get_user(user_id)
+#         if user:
+#             await message.reply(f"Привет, {user['username']}! Добро пожаловать обратно!")
+#         else:
+#             await add_user(user_id, username)
+#             await message.reply("Привет! Вы новый пользователь. Введите ваше имя, чтобы начать.")
+#             return
+
+#         if await check_subscription(user_id, bot):
+#             await message.reply("Вы подписаны на оба канала! Добро пожаловать!")
+#             await show_main_menu(message)
+#         else:
+#             await message.reply("Пожалуйста, подпишитесь на оба канала, чтобы продолжить:")
+#             await message.reply(f"1. {CHANNEL_ID_1}\n2. {CHANNEL_ID_2}")
+
+#             markup = InlineKeyboardMarkup()
+#             check_btn = InlineKeyboardButton("Проверить подписку", callback_data='check_subscription')
+#             markup.add(check_btn)
+#             await message.reply("После подписки нажмите кнопку ниже для проверки:", reply_markup=markup)
+
+#     except Exception as e:
+#         logging.error(f"Ошибка при обработке команды /start: {e}................................................................................................................")
 
 
 
-# # Обработчик нажатия на кнопку "Я перешел по ссылке"
-# @dp.callback_query_handler(lambda c: c.data == 'confirm_link')
-# async def process_confirm_link_callback(callback_query: types.CallbackQuery):
-#     user_id = callback_query.from_user.id
-#     await update_link_status(user_id, 'opened')  # Обновляем статус перехода
-#     await bot.send_message(user_id, "Спасибо за подтверждение! Добро пожаловать!")
-#     await show_main_menu(callback_query.message)
 
-#     # Закрываем всплывающее уведомление о нажатии на кнопку
-#     await bot.answer_callback_query(callback_query.id)
-
-
-# Проверка подписки пользователя на оба канала (NEW)
-
-async def check_subscription(user_id: int, bot: Bot) -> bool:
-
+# Функция для проверки подписки на канал (NEW)
+async def check_subscription(user_id: int, channel: str) -> bool:
     try:
-         # Проверяем подписку на первый канал
-        logging.info("Начата проверка пользователя по подпискам на канал........................................................................................................")
-        try:
-            member_1 = await bot.get_chat_member(chat_id=CHANNEL_ID_1, user_id=user_id)
-            is_subscribed_1 = member_1.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
-        except Exception as e:
-            logging.error(f"Ошибка при проверке подписки на канал 1 для пользователя {user_id}: {e}.............................................................................")
-            is_subscribed_1 = False
-#         # Проверяем подписку на второй канал
-        try:
-            member_2 = await bot.get_chat_member(chat_id=CHANNEL_ID_2, user_id=user_id)
-            is_subscribed_2 = member_2.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
-        except Exception as e:
-            logging.error(f"Ошибка при проверке подписки на канал 2 для пользователя {user_id}: {e}.............................................................................")
-            is_subscribed_2 = False
-         # Возвращаем True только если пользователь подписан на оба канала
-
-            logging.info("Закончена проверка пользователя по подпискам на канал.................................................................................................")
-
-            return is_subscribed_1 and is_subscribed_2
-    except Exception as e:
-
-        logging.error(f"Общая ошибка при проверке подписки для пользователя {user_id}: {e}......................................................................................")
+        member = await bot.get_chat_member(chat_id=channel, user_id=user_id)
+        return member.status in ['member', 'administrator', 'creator']
+    except (ChatNotFound, BadRequest) as e:
+        logging.error(f"Ошибка при проверке подписки: {e}")
         return False
-# Проверка подписки пользователя на оба канала (OLD)
+
+
+# Обработчик нажатия на кнопку "Проверить подписку"
+@dp.callback_query_handler(lambda c: c.data == 'check_subscription')
+async def process_subscription_check(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
+
+    is_subscribed_1 = await check_subscription(user_id, CHANNEL_ID_1)
+    is_subscribed_2 = await check_subscription(user_id, CHANNEL_ID_2)
+
+    if is_subscribed_1 and is_subscribed_2:
+        await bot.send_message(user_id, "Спасибо за подписку! Добро пожаловать!")
+        await show_main_menu(callback_query.message)
+    else:
+        await bot.send_message(user_id, "Вы еще не подписались на оба канала. Пожалуйста, подпишитесь для продолжения.")
+    
+    await bot.answer_callback_query(callback_query.id)
+
+
+
+
+# # Проверка подписки пользователя на оба канала (OLD 2)
+# async def check_subscription(user_id: int, bot: Bot) -> bool:
+
+#     try:
+#          # Проверяем подписку на первый канал
+#         logging.info("Начата проверка пользователя по подпискам на канал........................................................................................................")
+#         try:
+#             member_1 = await bot.get_chat_member(chat_id=CHANNEL_ID_1, user_id=user_id)
+#             is_subscribed_1 = member_1.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
+#         except Exception as e:
+#             logging.error(f"Ошибка при проверке подписки на канал 1 для пользователя {user_id}: {e}.............................................................................")
+#             is_subscribed_1 = False
+# #         # Проверяем подписку на второй канал
+#         try:
+#             member_2 = await bot.get_chat_member(chat_id=CHANNEL_ID_2, user_id=user_id)
+#             is_subscribed_2 = member_2.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]
+#         except Exception as e:
+#             logging.error(f"Ошибка при проверке подписки на канал 2 для пользователя {user_id}: {e}.............................................................................")
+#             is_subscribed_2 = False
+#          # Возвращаем True только если пользователь подписан на оба канала
+
+#             logging.info("Закончена проверка пользователя по подпискам на канал.................................................................................................")
+
+#             return is_subscribed_1 and is_subscribed_2
+#     except Exception as e:
+
+#         logging.error(f"Общая ошибка при проверке подписки для пользователя {user_id}: {e}......................................................................................")
+#         return False
+
+
+
+
+
+# Проверка подписки пользователя на оба канала (OLD 1)
 
 # )async def check_subscription(user_id: int, bot: Bot) -> bool:
 #      try:
@@ -153,6 +229,12 @@ async def check_subscription(user_id: int, bot: Bot) -> bool:
 #          return False
 
 
+
+
+
+
+
+
 # Главное меню
 async def show_main_menu(message: types.Message):
     try:
@@ -163,16 +245,6 @@ async def show_main_menu(message: types.Message):
     except Exception as e:
         logging.error(f"Ошибка при отображении главного меню: {e}..............................................................................................................")
 
-
-# Обновление статуса перехода
-async def update_link_status(user_id, status):
-    try:
-        async with aiosqlite.connect(DB_NAME) as conn:
-            async with conn.cursor() as cursor:
-                await cursor.execute('''UPDATE users SET link_status = ? WHERE user_id = ?''', (status, user_id))
-                await conn.commit()
-    except Exception as e:
-        logging.error(f"Ошибка при обновлении статуса перехода для пользователя {user_id}: {e}.................................................................................", exc_info=True)
 
 
 
