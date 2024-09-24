@@ -6,8 +6,12 @@ from datetime import datetime
 # Получение имени базы данных из переменной окружения или дефолтное значение
 DB_NAME = os.getenv('DB_NAME', 'CARS2.db')
 
+# Настройка логирования
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 async def check_tables():
+    """Проверить наличие таблиц в базе данных и вывести их имена в лог."""
     async with aiosqlite.connect(DB_NAME) as conn:
         async with conn.cursor() as cursor:
             await cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -15,40 +19,30 @@ async def check_tables():
             logging.info(f"Таблицы в базе данных: {tables}")
 
 
-
 async def init_db():
-    logging.info("Инициализация базы данных начата........................................................................................................................................")
+    """Инициализация базы данных, создание таблиц и вставка данных."""
+    logging.info("Инициализация базы данных...")
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
-            # Установка режима WAL (журнал транзакций)
             await conn.execute('PRAGMA journal_mode=WAL;')
-
-            # Логирование создания таблицы users
-            logging.info("Таблица users создается")
-            await conn.execute('''
+            # Создание таблиц
+            await create_table(conn, "users", '''
                 CREATE TABLE IF NOT EXISTS users (
                     user_id INTEGER PRIMARY KEY,
                     username TEXT NOT NULL,
                     balance REAL DEFAULT 0
                 )
             ''')
-            logging.info("Таблица users успешно создана или уже существует.")
-
-            # Логирование создания таблицы cars
-            logging.info("Таблица cars создается")
-            await conn.execute('''
+            await create_table(conn, "cars", '''
                 CREATE TABLE IF NOT EXISTS cars (
                     car_id INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
                     price REAL NOT NULL,
-                    power REAL NOT NULL
+                    power REAL NOT NULL,
+                    type TEXT NOT NULL
                 )
             ''')
-            logging.info("Таблица cars успешно создана или уже существует.")
-
-            # Логирование создания таблицы purchases
-            logging.info("Таблица purchases создается")
-            await conn.execute('''
+            await create_table(conn, "purchases", '''
                 CREATE TABLE IF NOT EXISTS purchases (
                     user_id INTEGER,
                     car_id INTEGER,
@@ -57,11 +51,7 @@ async def init_db():
                     FOREIGN KEY(car_id) REFERENCES cars(car_id) ON DELETE CASCADE
                 )
             ''')
-            logging.info("Таблица purchases успешно создана или уже существует.")
-
-            # Логирование создания таблицы earnings
-            logging.info("Таблица earnings создается")
-            await conn.execute('''
+            await create_table(conn, "earnings", '''
                 CREATE TABLE IF NOT EXISTS earnings (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     user_id INTEGER,
@@ -70,11 +60,7 @@ async def init_db():
                     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
                 )
             ''')
-            logging.info("Таблица earnings успешно создана или уже существует.")
-
-            # Логирование создания таблицы channels
-            logging.info("Таблица channels создается")
-            await conn.execute('''
+            await create_table(conn, "channels", '''
                 CREATE TABLE IF NOT EXISTS channels (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
@@ -82,21 +68,13 @@ async def init_db():
                     promo_type TEXT NOT NULL
                 )
             ''')
-            logging.info("Таблица channels успешно создана или уже существует.")
-
             # Вставка данных в таблицу channels, если они не существуют
-            logging.info("Добавление данных в таблицу channels")
-            await conn.execute('''
-                INSERT OR IGNORE INTO channels (name, link, promo_type) VALUES
+            await conn.execute('''INSERT OR IGNORE INTO channels (name, link, promo_type) VALUES
                 ('Channel 1', 'https://t.me/channel1', 'regular'),
                 ('Channel 2', 'https://t.me/channel2', 'special'),
                 ('Channel 3', 'https://t.me/klev_ton', 'advanced')
             ''')
-            logging.info("Данные в таблицу channels успешно добавлены.")
-
-            # Логирование создания таблицы promo_codes
-            logging.info("Таблица promo_codes создается")
-            await conn.execute('''
+            await create_table(conn, "promo_codes", '''
                 CREATE TABLE IF NOT EXISTS promo_codes (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     code TEXT NOT NULL UNIQUE,
@@ -105,58 +83,58 @@ async def init_db():
                     expiration_time TEXT NOT NULL
                 )
             ''')
-            logging.info("Таблица promo_codes успешно создана или уже существует.")
 
-            # Выполняем коммит всех изменений
             await conn.commit()
 
         logging.info("Инициализация базы данных завершена.")
-
     except Exception as e:
         logging.error(f"Ошибка при инициализации базы данных: {e}")
 
 
-
-
-
+async def create_table(conn, table_name, create_table_sql):
+    """Вспомогательная функция для создания таблицы."""
+    logging.info(f"Создание таблицы {table_name}...")
+    await conn.execute(create_table_sql)
+    logging.info(f"Таблица {table_name} успешно создана или уже существует.")
 
 
 # Добавление пользователя
-async def add_user(user_id, username):
+async def add_user(user_id: int, username: str):
+    """Добавить пользователя в базу данных."""
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute('''INSERT OR IGNORE INTO users (user_id, username) VALUES (?, ?)''', (user_id, username))
+                await cursor.execute('INSERT OR IGNORE INTO users (user_id, username) VALUES (?, ?)', (user_id, username))
                 await conn.commit()
+                logging.info(f"Пользователь {username} с ID {user_id} успешно добавлен.")
     except Exception as e:
         logging.error(f"Ошибка при добавлении пользователя {user_id}: {e}", exc_info=True)
 
 
-
 # Получение информации о пользователе
-async def get_user(user_id):
+async def get_user(user_id: int) -> dict:
+    """Получить информацию о пользователе из базы данных по ID пользователя."""
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute('SELECT user_id, username, balance, is_subscribed FROM users WHERE user_id = ?', (user_id,))
+                await cursor.execute('SELECT user_id, username, balance FROM users WHERE user_id = ?', (user_id,))
                 row = await cursor.fetchone()
                 if row:
-                    return {'user_id': row[0], 
-                            'username': row[1],
-                            'balance': row[2], 
-                            'is_subscribed': row[3]
-                            }
-                else:
-                    logging.warning(f"Пользователь с ID {user_id} не найден.")
-                    return None
+                    return {
+                        'user_id': row[0],
+                        'username': row[1],
+                        'balance': row[2]
+                    }
+                logging.warning(f"Пользователь с ID {user_id} не найден.")
+                return None
     except Exception as e:
-        logging.error(f"Ошибка при получении пользователя {user_id}: {e}", exc_info=True)
-
-
+        logging.error(f"Ошибка получения пользователя {user_id}: {e}", exc_info=True)
+        return None
 
 
 # Обновление баланса пользователя
-async def update_user_balance(user_id, amount):
+async def update_user_balance(user_id: int, amount: float):
+    """Обновить баланс пользователя."""
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
@@ -169,50 +147,366 @@ async def update_user_balance(user_id, amount):
                 if new_balance < 0:
                     raise ValueError("Недостаточно средств.")
 
-                await cursor.execute('''UPDATE users SET balance = ? WHERE user_id = ?''', (new_balance, user_id))
+                await cursor.execute('UPDATE users SET balance = ? WHERE user_id = ?', (new_balance, user_id))
                 await conn.commit()
+                logging.info(f"Баланс пользователя {user_id} обновлен. Новый баланс: {new_balance}.")
     except Exception as e:
         logging.error(f"Ошибка при обновлении баланса пользователя {user_id}: {e}", exc_info=True)
 
 
 # Логирование дохода
-async def log_earning(user_id, amount):
-    try:    
+async def log_earning(user_id: int, amount: float):
+    """Зарегистрировать доход пользователя."""
+    try:
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute('''INSERT INTO earnings (user_id, amount, timestamp) VALUES (?, ?, ?)''', (user_id, amount, now))
+                await cursor.execute('INSERT INTO earnings (user_id, amount, timestamp) VALUES (?, ?, ?)', (user_id, amount, now))
                 await conn.commit()
                 logging.info(f"Логирование дохода: пользователь {user_id}, сумма {amount}.")
     except Exception as e:
-        logging.error(f"Ошибка при добавлении дохода {user_id}: {e}", exc_info=True)
+        logging.error(f"Ошибка при добавлении дохода пользователя {user_id}: {e}", exc_info=True)
+
 
 # Получение цены автомобиля
-async def get_car_price(car_id):
+async def get_car_price(car_id: int) -> float:
+    """Получить цену автомобиля по его ID."""
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute('''SELECT price FROM cars WHERE car_id = ?''', (car_id,))
+                await cursor.execute('SELECT price FROM cars WHERE car_id = ?', (car_id,))
                 result = await cursor.fetchone()
                 if result:
                     return result[0]
-                else:
-                    logging.warning(f"Машина с ID {car_id} не найдена.")
-                    return None
+                logging.warning(f"Автомобиль с ID {car_id} не найден.")
+                return None
     except Exception as e:
-        logging.error(f"Ошибка при получении машины {car_id}: {e}", exc_info=True)
+        logging.error(f"Ошибка при получении цены автомобиля {car_id}: {e}", exc_info=True)
+        return None
 
-# Получение баланса пользователя
-async def get_user_balance(user_id):
+
+# Получение данных о покупках и доходах пользователя
+async def get_user_balance_and_details(user_id: int):
+    """Получить данные о балансе, покупках и доходах пользователя."""
     try:
         async with aiosqlite.connect(DB_NAME) as conn:
+            # Получение общего баланса пользователя
             async with conn.cursor() as cursor:
-                await cursor.execute('''SELECT balance FROM users WHERE user_id = ?''', (user_id,))
+                await cursor.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
                 result = await cursor.fetchone()
-                return result[0] if result else 0
-    except Exception as e:
-        logging.error(f"Ошибка при получении баланса пользователя {user_id}: {e}", exc_info=True)
+                if not result:
+                    return None, None, None  # Если пользователя нет в базе данных
 
+                balance = result[0]
+
+                # Получение данных о покупках пользователя
+                await cursor.execute('''
+                    SELECT cars.name, cars.price, purchases.purchase_date 
+                    FROM purchases 
+                    JOIN cars ON purchases.car_id = cars.car_id 
+                    WHERE purchases.user_id = ?
+                ''', (user_id,))
+                purchases = await cursor.fetchall()
+
+                # Получение данных о доходах пользователя
+                await cursor.execute('''
+                    SELECT amount, timestamp 
+                    FROM earnings 
+                    WHERE user_id = ?
+                ''', (user_id,))
+                earnings = await cursor.fetchall()
+
+                return balance, purchases, earnings
+    except Exception as e:
+        logging.error(f"Ошибка при получении данных пользователя {user_id}: {e}")
+        return None, None, None
+
+
+# # Пример использования функции добавления пользователя
+# async def main():
+#     await init_db()
+#     await add_user(1, "User1")
+#     user_info = await get_user(1)
+#     logging.info(f"Информация о пользователе: {user_info}")
+
+#     await update_user_balance(1, 100.0)
+#     balance, purchases, earnings = await get_user_balance_and_details(1)
+#     logging.info(f"Баланс: {balance}, Покупки: {purchases}, Доходы: {earnings}")
+
+# # Для запуска функции main
+# # if __name__ == "__main__":
+# #     import asyncio
+# #     asyncio.run(main())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###############################################################################################################################################
+# )import aiosqlite
+# import logging
+# import os
+# from datetime import datetime
+
+# # Получение имени базы данных из переменной окружения или дефолтное значение
+# DB_NAME = os.getenv('DB_NAME', 'CARS2.db')
+
+
+# )async def check_tables():
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+#             tables = await cursor.fetchall()
+#             logging.info(f"Таблицы в базе данных: {tables}")
+
+
+
+# async def init_db():
+#     logging.info("Инициализация базы данных начата........................................................................................................................................")
+#     try:
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             # Установка режима WAL (журнал транзакций)
+#             await conn.execute('PRAGMA journal_mode=WAL;')
+
+#             # Логирование создания таблицы users
+#             logging.info("Таблица users создается")
+#             await conn.execute('''
+#                 CREATE TABLE IF NOT EXISTS users (
+#                     user_id INTEGER PRIMARY KEY,
+#                     username TEXT NOT NULL,
+#                     balance REAL DEFAULT 0
+#                 )
+#             ''')
+#             logging.info("Таблица users успешно создана или уже существует.")
+
+#             # Логирование создания таблицы cars
+#             logging.info("Таблица cars создается")
+#             await conn.execute('''
+#                 CREATE TABLE IF NOT EXISTS cars (
+#                     car_id INTEGER PRIMARY KEY,
+#                     name TEXT NOT NULL,
+#                     price REAL NOT NULL,
+#                     power REAL NOT NULL,
+#                     type TEXT NOT NULL
+#                 )
+#             ''')
+#             logging.info("Таблица cars успешно создана или уже существует.")
+
+#             # Логирование создания таблицы purchases
+#             logging.info("Таблица purchases создается")
+#             await conn.execute('''
+#                 CREATE TABLE IF NOT EXISTS purchases (
+#                     user_id INTEGER,
+#                     car_id INTEGER,
+#                     purchase_date TEXT NOT NULL,
+#                     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+#                     FOREIGN KEY(car_id) REFERENCES cars(car_id) ON DELETE CASCADE
+#                 )
+#             ''')
+#             logging.info("Таблица purchases успешно создана или уже существует.")
+
+#             # Логирование создания таблицы earnings
+#             logging.info("Таблица earnings создается")
+#             await conn.execute('''
+#                 CREATE TABLE IF NOT EXISTS earnings (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+#                     user_id INTEGER,
+#                     amount REAL NOT NULL,
+#                     timestamp TEXT NOT NULL,
+#                     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+#                 )
+#             ''')
+#             logging.info("Таблица earnings успешно создана или уже существует.")
+
+#             # Логирование создания таблицы channels
+#             logging.info("Таблица channels создается")
+#             await conn.execute('''
+#                 CREATE TABLE IF NOT EXISTS channels (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+#                     name TEXT NOT NULL,
+#                     link TEXT NOT NULL,
+#                     promo_type TEXT NOT NULL
+#                 )
+#             ''')
+#             logging.info("Таблица channels успешно создана или уже существует.")
+
+#             # Вставка данных в таблицу channels, если они не существуют
+#             logging.info("Добавление данных в таблицу channels")
+#             await conn.execute('''
+#                 INSERT OR IGNORE INTO channels (name, link, promo_type) VALUES
+#                 ('Channel 1', 'https://t.me/channel1', 'regular'),
+#                 ('Channel 2', 'https://t.me/channel2', 'special'),
+#                 ('Channel 3', 'https://t.me/klev_ton', 'advanced')
+#             ''')
+#             logging.info("Данные в таблицу channels успешно добавлены.")
+
+#             # Логирование создания таблицы promo_codes
+#             logging.info("Таблица promo_codes создается")
+#             await conn.execute('''
+#                 CREATE TABLE IF NOT EXISTS promo_codes (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+#                     code TEXT NOT NULL UNIQUE,
+#                     category TEXT NOT NULL,
+#                     reward INTEGER NOT NULL,
+#                     expiration_time TEXT NOT NULL
+#                 )
+#             ''')
+#             logging.info("Таблица promo_codes успешно создана или уже существует.")
+
+#             # Выполняем коммит всех изменений
+#             await conn.commit()
+
+#         logging.info("Инициализация базы данных завершена.")
+
+#     except Exception as e:
+#         logging.error(f"Ошибка при инициализации базы данных: {e}")
+
+
+
+
+
+
+
+# # Добавление пользователя
+# async def add_user(user_id, username):
+#     try:
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('''INSERT OR IGNORE INTO users (user_id, username) VALUES (?, ?)''', (user_id, username))
+#                 await conn.commit()
+#     except Exception as e:
+#         logging.error(f"Ошибка при добавлении пользователя {user_id}: {e}", exc_info=True)
+
+
+
+# # Получение информации о пользователе
+# async def get_user(user_id):
+#     try:
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('SELECT user_id, username, balance, is_subscribed FROM users WHERE user_id = ?', (user_id,))
+#                 row = await cursor.fetchone()
+#                 if row:
+#                     return {'user_id': row[0], 
+#                             'username': row[1],
+#                             'balance': row[2], 
+#                             'is_subscribed': row[3]
+#                             }
+#                 else:
+#                     logging.warning(f"Пользователь с ID {user_id} не найден.")
+#                     return None
+#     except Exception as e:
+#         logging.error(f"Ошибка при получении пользователя {user_id}: {e}", exc_info=True)
+
+
+
+
+# # Обновление баланса пользователя
+# async def update_user_balance(user_id, amount):
+#     try:
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
+#                 result = await cursor.fetchone()
+#                 if result is None:
+#                     raise ValueError("Пользователь не найден.")
+
+#                 new_balance = result[0] + amount
+#                 if new_balance < 0:
+#                     raise ValueError("Недостаточно средств.")
+
+#                 await cursor.execute('''UPDATE users SET balance = ? WHERE user_id = ?''', (new_balance, user_id))
+#                 await conn.commit()
+#     except Exception as e:
+#         logging.error(f"Ошибка при обновлении баланса пользователя {user_id}: {e}", exc_info=True)
+
+
+# # Логирование дохода
+# async def log_earning(user_id, amount):
+#     try:    
+#         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('''INSERT INTO earnings (user_id, amount, timestamp) VALUES (?, ?, ?)''', (user_id, amount, now))
+#                 await conn.commit()
+#                 logging.info(f"Логирование дохода: пользователь {user_id}, сумма {amount}.")
+#     except Exception as e:
+#         logging.error(f"Ошибка при добавлении дохода {user_id}: {e}", exc_info=True)
+
+# # Получение цены автомобиля
+# async def get_car_price(car_id):
+#     try:
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('''SELECT price FROM cars WHERE car_id = ?''', (car_id,))
+#                 result = await cursor.fetchone()
+#                 if result:
+#                     return result[0]
+#                 else:
+#                     logging.warning(f"Машина с ID {car_id} не найдена.")
+#                     return None
+#     except Exception as e:
+#         logging.error(f"Ошибка при получении машины {car_id}: {e}", exc_info=True)
+
+# # Получение баланса пользователя
+# # async def get_user_balance(user_id):
+# #     try:
+# #         async with aiosqlite.connect(DB_NAME) as conn:
+# #             async with conn.cursor() as cursor:
+# #                 await cursor.execute('''SELECT balance FROM users WHERE user_id = ?''', (user_id,))
+# #                 result = await cursor.fetchone()
+# #                 return result[0] if result else 0
+# #     except Exception as e:
+# #         logging.error(f"Ошибка при получении баланса пользователя {user_id}: {e}", exc_info=True)
+
+
+# )import aiosqlite
+
+# # Функция для получения данных о покупках и доходах пользователя
+# async def get_user_balance_and_details(user_id):
+#     try:
+#         async with aiosqlite.connect(DB_NAME) as conn:
+#             # Получение общего баланса пользователя
+#             async with conn.cursor() as cursor:
+#                 await cursor.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
+#                 result = await cursor.fetchone()
+#                 if not result:
+#                     return None, None, None  # Если пользователя нет в базе данных
+
+#    )             balance = result[0]
+
+#                 # Получение данных о покупках пользователя
+#                 await cursor.execute('''
+#                     SELECT cars.name, cars.price, purchases.purchase_date 
+#                     FROM purchases 
+#                     JOIN cars ON purchases.car_id = cars.car_id 
+#                     WHERE purchases.user_id = ?
+#                 ''', (user_id,))
+#                 purchases = await cursor.fetchall()
+
+#                 # Получение данных о доходах пользователя
+#                 await cursor.execute('''
+#                     SELECT amount, timestamp 
+#                     FROM earnings 
+#                     WHERE user_id = ?
+#                 ''', (user_id,))
+#                 earnings = await cursor.fetchall()
+
+#                 return balance, purchases, earnings
+#     except Exception as e:
+#         logging.error(f"Ошибка при получении данных пользователя {user_id}: {e}")
+#         return None, None, None
 
 
 

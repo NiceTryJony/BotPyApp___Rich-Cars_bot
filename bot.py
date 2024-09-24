@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 import asyncio
 from aiogram import Bot, Dispatcher, types
-from database import init_db , add_user, get_user, update_user_balance, check_tables, get_user_balance
+from database import init_db , add_user, get_user, update_user_balance, check_tables, get_user_balance_and_details
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ChatMemberStatus
 from datetime import datetime, timedelta
 from aiogram.utils.exceptions import ChatNotFound, BadRequest
@@ -44,6 +44,39 @@ CHANNELS = [
     # Добавьте сюда дополнительные каналы в будущем
     #{'name': 'Channel 3', 'id': '@your_channel_3'}
 ]
+
+# car_config.py
+
+# Список простых машин
+SIMPLE_CARS = [
+    {'name': 'ВАЗ-2109', 'price': 500, 'power': 1, 'type': 'simple'},
+    {'name': 'Lada Niva', 'price': 1000, 'power': 5, 'type': 'simple'},
+    {'name': 'Део Ланос', 'price': 1500, 'power': 10, 'type': 'simple'},
+    {'name': 'BMW E34', 'price': 5000, 'power': 25, 'type': 'simple'},
+    {'name': 'Skoda Octavia', 'price': 6500, 'power': 50, 'type': 'simple'}
+]
+
+# Список VIP машин
+VIP_CARS = [
+    {'name': 'Infiniti QX56', 'price': 15000, 'power': 100, 'type': 'vip'},
+    {'name': 'Tesla Model 3', 'price': 21000, 'power': 160, 'type': 'vip'},
+    {'name': 'BMW M5 F90', 'price': 35000, 'power': 250, 'type': 'vip'},
+    {'name': 'BMW F10', 'price': 50000, 'power': 350, 'type': 'vip'},
+    {'name': 'Mercedes CLS', 'price': 70000, 'power': 450, 'type': 'vip'},
+    {'name': 'Mercedes GL 200', 'price': 100000, 'power': 500, 'type': 'vip'}
+]
+
+# Список специальных машин
+SPECIAL_CARS = [
+    {'name': 'Ferrari LaFerrari', 'price': 200000, 'power': 950, 'type': 'special'},
+    {'name': 'Bugatti Chiron', 'price': 300000, 'power': 1500, 'type': 'special'},
+    {'name': 'Porsche 918 Spyder', 'price': 180000, 'power': 887, 'type': 'special'},
+    {'name': 'McLaren P1', 'price': 165000, 'power': 903, 'type': 'special'},
+    {'name': 'Aston Martin Valkyrie', 'price': 350000, 'power': 1160, 'type': 'special'}
+]
+
+
+
 
 
 
@@ -217,9 +250,6 @@ async def process_subscription_check(callback_query: types.CallbackQuery):
 #         return False
 
 
-
-
-
 # Проверка подписки пользователя на оба канала (OLD 1)
 
 # )async def check_subscription(user_id: int, bot: Bot) -> bool:
@@ -233,6 +263,45 @@ async def process_subscription_check(callback_query: types.CallbackQuery):
 #          return False
 
 
+@dp.callback_query_handler(lambda c: c.data == "check_balance")
+async def check_balance(callback_query: types.CallbackQuery):
+    try:
+        user_id = callback_query.from_user.id
+
+        # Получение данных о балансе и деталях пользователя
+        balance, purchases, earnings = await get_user_balance_and_details(user_id)
+
+        if balance is None:
+            await callback_query.message.answer("Вы не зарегистрированы или не совершали покупок.")
+            return
+
+        # Создание текста для ответа пользователю
+        response_text = f"Ваш текущий баланс: {balance} рублей.\n\n"
+        
+        if purchases:
+            response_text += "Ваши покупки:\n"
+            for car_name, car_price, purchase_date in purchases:
+                response_text += f"- {car_name} за {car_price} рублей (дата покупки: {purchase_date})\n"
+        else:
+            response_text += "У вас нет покупок.\n"
+
+        if earnings:
+            response_text += "\nВаши доходы:\n"
+            for amount, timestamp in earnings:
+                response_text += f"- {amount} рублей (дата: {timestamp})\n"
+        else:
+            response_text += "У вас нет доходов.\n"
+
+        # Отправляем ответ пользователю
+        await callback_query.message.answer(response_text)
+        
+        # Закрываем инлайн клавиатуру (если нужно)
+        await callback_query.answer()
+    except Exception as e:
+        logging.error(f"Ошибка при проверке баланса: {e}")
+        await callback_query.message.answer("Произошла ошибка при попытке проверить баланс.")
+
+
 
 
 
@@ -244,39 +313,74 @@ async def show_main_menu(message: types.Message):
     try:
         markup = InlineKeyboardMarkup()
         promo_code_btn = InlineKeyboardButton("Активировать промокод", callback_data='activate_promo')
-        markup.add(promo_code_btn)
+        check_balance_btn = InlineKeyboardButton("Проверить баланс", callback_data='check_balance')
+        open_mini_app_btn = InlineKeyboardButton("Открыть мини приложение", url="https://t.me/Rich_Cars_bot")
+
+        markup.add(promo_code_btn, check_balance_btn, open_mini_app_btn)
+
         await message.reply("Выберите действие:", reply_markup=markup)
     except Exception as e:
-        logging.error(f"Ошибка при отображении главного меню: {e}..............................................................................................................")
+        logging.error(f"Ошибка при отображении главного меню: {e}")
 
 
 
 
-# Обработка промокода
+
 @dp.callback_query_handler(lambda c: c.data == 'activate_promo')
 async def process_activate_promo(callback_query: types.CallbackQuery):
     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
-    dp.register_message_handler(handle_promo_code)  # Ждем промокод
+    # Регистрация обработчика для промокодов без сохранения предыдущих
+    @dp.message_handler(lambda m: m.from_user.id == callback_query.from_user.id)
+    async def handle_promo_code(message: types.Message):
+        promo_code = message.text.strip()
+        async with aiosqlite.connect(DB_NAME) as conn:
+            async with conn.cursor() as cursor:
+                await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+                result = await cursor.fetchone()
 
+                if result:
+                    reward, expiration_time = result
+                    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-async def handle_promo_code(message: types.Message):
-    promo_code = message.text.strip()
-    async with aiosqlite.connect(DB_NAME) as conn:
-        async with conn.cursor() as cursor:
-            await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
-            result = await cursor.fetchone()
-
-            if result:
-                reward, expiration_time = result
-                now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-                if now < expiration_time:
-                    await update_user_balance(message.from_user.id, reward)
-                    await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+                    if now < expiration_time:
+                        await update_user_balance(message.from_user.id, reward)
+                        await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+                    else:
+                        await message.reply("Промокод истек.")
                 else:
-                    await message.reply("Промокод истек.")
-            else:
-                await message.reply("Неверный промокод. Попробуйте снова.")
+                    await message.reply("Неверный промокод. Попробуйте снова.")
+
+    # Регистрация обработчика для обработки ввода промокода
+    dp.register_message_handler(handle_promo_code, lambda m: m.from_user.id == callback_query.from_user.id)
+
+
+
+
+# # Обработка промокода
+# @dp.callback_query_handler(lambda c: c.data == 'activate_promo')
+# async def process_activate_promo(callback_query: types.CallbackQuery):
+#     await bot.send_message(callback_query.from_user.id, "Введите ваш промокод:")
+#     dp.register_message_handler(handle_promo_code)  # Ждем промокод
+
+
+# )async def handle_promo_code(message: types.Message):
+#     promo_code = message.text.strip()
+#     async with aiosqlite.connect(DB_NAME) as conn:
+#         async with conn.cursor() as cursor:
+#             await cursor.execute('SELECT reward, expiration_time FROM promo_codes WHERE code = ?', (promo_code,))
+#             result = await cursor.fetchone()
+
+#             if result:
+#                 reward, expiration_time = result
+#                 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+#                 if now < expiration_time:
+#                     await update_user_balance(message.from_user.id, reward)
+#                     await message.reply(f"Промокод принят! Вы получили {reward} монет.")
+#                 else:
+#                     await message.reply("Промокод истек.")
+#             else:
+#                 await message.reply("Неверный промокод. Попробуйте снова.")
 
 
 
@@ -292,7 +396,7 @@ async def main():
         logging.error(f"Ошибка при запуске бота: {e}....................................................................................................................")
 
 if __name__ == '__main__':
-    asyncio.run(main())
+        asyncio.run(main())
 
 
 
