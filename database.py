@@ -155,7 +155,7 @@ async def get_user(user_id: int) -> dict:
 async def update_user_balance(user_id: int, amount: float):
     """Обновить баланс пользователя."""
     if not isinstance(user_id, int) or user_id <= 0:
-        logging.error("user_id должен быть положительным целым числом.")
+        logging.error("{user_id} user_id должен быть положительным целым числом.")
         return
 
     if not isinstance(amount, (int, float)):
@@ -184,7 +184,7 @@ async def update_user_balance(user_id: int, amount: float):
 async def log_earning(user_id: int, amount: float):
     """Зарегистрировать доход пользователя."""
     if not isinstance(user_id, int) or user_id <= 0:
-        logging.error("user_id должен быть положительным целым числом.")
+        logging.error("{user_id} user_id должен быть положительным целым числом.")
         return
 
     if not isinstance(amount, (int, float)):
@@ -233,7 +233,7 @@ async def get_car_price(car_id: int) -> float:
 async def get_user_balance_and_details(user_id: int):
     """Получить данные о балансе, покупках и доходах пользователя."""
     if not isinstance(user_id, int) or user_id <= 0:
-        logging.error("user_id должен быть положительным целым числом.")
+        logging.error("{user_id} user_id должен быть положительным целым числом.")
         return None, None, None
 
     try:
@@ -336,7 +336,7 @@ async def redeem_promo_code(user_id: int, code: str):
             await conn.execute('SELECT * FROM used_promo_codes WHERE user_id = ? AND promo_code = ?', (user_id, code))
             if await conn.fetchone() is not None:
                 logging.warning(f"Промокод {code} уже был использован пользователем {user_id}.")
-                await conn.execute('ROLLBACK;')
+                #await conn.execute('ROLLBACK;')
                 return
 
             # Получение информации о промокоде
