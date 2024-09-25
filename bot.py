@@ -315,7 +315,7 @@ async def show_main_menu(message: types.Message):
         markup = InlineKeyboardMarkup()
         promo_code_btn = InlineKeyboardButton("Активировать промокод", callback_data='activate_promo')
         check_balance_btn = InlineKeyboardButton("Проверить баланс", callback_data='check_balance')
-        open_mini_app_btn = InlineKeyboardButton("Открыть мини приложение", url="https://t.me/Rich_Cars_bot")
+        open_mini_app_btn = InlineKeyboardButton("Открыть мини приложение", url="https://t.me/botrichcars-3d6fdb98c849.herokuapp.com")
 
         markup.add(promo_code_btn, check_balance_btn, open_mini_app_btn)
 
