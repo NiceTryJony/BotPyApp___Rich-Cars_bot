@@ -1,37 +1,72 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Web App</title>
+    <link rel="stylesheet" href="styles.css">  <!-- Подключение внешнего CSS для стилизации -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Пример встроенного CSS для базовой стилизации */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #0078ff;
+        }
+        #user-info {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #0078ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to your Telegram Web рормсопра Apjp</h1>
-    <p id="user-info">Loading...</p>
-
-
-
-
-
-
-
-
+    <header>
+        <h1>Welcome to your Telegram Web App</h1>
+    </header>
+    <main>
+        <p id="user-info">Loading...</p>
+        <button id="actionButton">Close</button>  <!-- Кнопка для закрытия приложения -->
+    </main>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();  // Растягиваем Web App
 
         document.getElementById('actionButton').addEventListener('click', () => {
-            Telegram.WebApp.close();  // Закрывает Web App после выполнения действия
+            tg.close();  // Закрывает Web App после выполнения действия
         });
 
         // Запрос данных пользователя
         fetch('/api/user_data')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');  // Обработка сетевой ошибки
+                }
+                return response.json();
+            })
             .then(data => {
                 document.getElementById('user-info').innerHTML = `Username: ${data.username}<br>Balance: ${data.balance}`;
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);  // Обработка ошибок
+                document.getElementById('user-info').innerHTML = 'Failed to load user data. Please try again later.';
             });
     </script>
 </body>
