@@ -20,6 +20,7 @@ DB_NAME = os.getenv('DB_NAME')
 # Идентификаторы каналов
 CHANNEL_ID_1 = '@RICH_CARSETA'
 CHANNEL_ID_2 = '@CHANEL_TRY'
+#@INVEST_KRIPTA_MINING
 
 # Настройка логирования
 logging.basicConfig(

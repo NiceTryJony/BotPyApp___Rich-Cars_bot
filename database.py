@@ -155,7 +155,7 @@ async def get_user(user_id: int) -> dict:
 async def update_user_balance(user_id: int, amount: float):
     """Обновить баланс пользователя."""
     if not isinstance(user_id, int) or user_id <= 0:
-        logging.error("{user_id} user_id должен быть положительным целым числом.")
+        logging.error("{user_id} )user_id должен быть положительным целым числом.")
         return
 
     if not isinstance(amount, (int, float)):
